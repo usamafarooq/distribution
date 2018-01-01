@@ -30,16 +30,7 @@
                                 <div class="panel-heading">
                                     <div class="panel-title">
                                         <h4>View Product</h4>
-                                       <!--  <?php 
-                                            if ($permission['created'] == '1') {
-                                        ?>
-                                        <a href="<?php echo base_url('product/create') ?>"><button class="btn btn-info pull-right">Add Product</button></a>
-                                        <?php } ?> -->
-
-                                        <button type="button" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#myModal">Import Csv</button>
-
-            <a href="<?php echo base_url('product/export_csv_file') ?>" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;">Export Csv File</a>
-
+                                       
 
 
                                     </div>

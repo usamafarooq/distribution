@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Order extends MY_Controller {
+class Sales extends MY_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('Order_model');
-		$this->module = 'order';
+		$this->load->model('Sales_model');
+		$this->module = 'sales';
         $this->user_type = $this->session->userdata('user_type');
         $this->id = $this->session->userdata('user_id');
         $this->permission = $this->get_permission($this->module,$this->user_type);
@@ -21,13 +21,14 @@ class Order extends MY_Controller {
 		}
 		$this->data['title'] = 'Sales';
 		if ( $this->permission['view_all'] == '1'){
-			$this->data['orders'] = $this->Order_model->order_detail();
+			$this->data['orders'] = $this->Sales_model->sales_detail();
+			// echo '<pre>';print_r($this->data['orders']);die;
 		}
 		elseif ($this->permission['view'] == '1') {
-			$this->data['orders'] = $this->Order_model->get_rows('order_table',array('user_id'=>$this->id));
+			$this->data['orders'] = $this->Sales_model->get_rows('sales',array('user_id'=>$this->id));
 		}
 		$this->data['permission'] = $this->permission;
-		$this->load->template('order/index',$this->data);
+		$this->load->template('sales/index',$this->data);
 	}
 
 	public function create()
@@ -37,10 +38,10 @@ class Order extends MY_Controller {
 			redirect('home');
 		}
 		$this->data['title'] = 'Create Sales';
-		$this->data['orders'] = $this->Order_model->all_rows('order_table');
-		$this->data['products'] = $this->Order_model->all_rows('product');
-		$this->data['distributions'] = $this->Order_model->all_rows('distribution');
-		$this->load->template('order/create',$this->data);
+		$this->data['orders'] = $this->Sales_model->all_rows('sales');
+		$this->data['products'] = $this->Sales_model->all_rows('product');
+		$this->data['distributions'] = $this->Sales_model->all_rows('distribution');
+		$this->load->template('sales/create',$this->data);
 	}
 
 	public function insert()
@@ -50,10 +51,11 @@ class Order extends MY_Controller {
 			redirect('home');
 		}
 		$data = $this->input->post();
+		$data['date'] = date('Y-m-d');
 		$data['user_id'] = $this->session->userdata('user_id');
-		$id = $this->Order_model->insert('order_table',$data);
+		$id = $this->Sales_model->insert('sales',$data);
 		if ($id) {
-			redirect('order');
+			redirect('sales');
 		}
 	}
 
@@ -64,10 +66,10 @@ class Order extends MY_Controller {
 			redirect('home');
 		}
 		$this->data['title'] = 'Edit Sales';
-		$this->data['distributions'] = $this->Order_model->all_rows('distribution');
-		$this->data['products'] = $this->Order_model->all_rows('product');
-		$this->data['orders'] = $this->Order_model->get_row_single('order_table',array('id'=>$id));
-		$this->load->template('order/edit',$this->data);
+		$this->data['distributions'] = $this->Sales_model->all_rows('distribution');
+		$this->data['products'] = $this->Sales_model->all_rows('product');
+		$this->data['orders'] = $this->Sales_model->get_row_single('sales',array('id'=>$id));
+		$this->load->template('sales/edit',$this->data);
 	}
 
 	public function update()
@@ -79,9 +81,9 @@ class Order extends MY_Controller {
 		$data = $this->input->post();
 		$id = $data['id'];
 		unset($data['id']);
-		$id = $this->Order_model->update('order_table',$data,array('id'=>$id));
+		$id = $this->Sales_model->update('sales',$data,array('id'=>$id));
 		if ($id) {
-			redirect('order');
+			redirect('sales');
 		}
 	}
 
@@ -91,8 +93,8 @@ class Order extends MY_Controller {
 		{
 			redirect('home');
 		}
-		$this->Order_model->delete('order_table',array('id'=>$id));
-		redirect('order');
+		$this->Sales_model->delete('sales',array('id'=>$id));
+		redirect('sales');
 	}
 
 	public function export_csv_file()
@@ -100,7 +102,7 @@ class Order extends MY_Controller {
 	    $delimiter = ",";
 	    $filename = "order.csv";
 	    $f = fopen('php://memory', 'w');
-		$products_csv_upload = $this->Order_model->all_rows('order_table');
+		$products_csv_upload = $this->Sales_model->all_rows('sales');
 		foreach($products_csv_upload as $row){
 			$lineData = array($row['Distribution_code'],$row['Packcode'],$row['Datename'],$row['Sales'],$row['Closing']);
 			fputcsv($f,$lineData, $delimiter);
@@ -133,9 +135,9 @@ class Order extends MY_Controller {
 					}
 				}
 				fclose($handle);
-				$data_response = $this->Order_model->insert_batch('order_table',$products_insert);
+				$data_response = $this->Sales_model->insert_batch('sales',$products_insert);
 				if ($data_response) {
-				redirect('order');
+				redirect('sales');
 				}
 			}
 		}
