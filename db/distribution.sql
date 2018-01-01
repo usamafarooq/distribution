@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.7.0
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 01, 2018 at 10:12 AM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.23
+-- Generation Time: Jan 01, 2018 at 11:37 AM
+-- Server version: 10.1.26-MariaDB
+-- PHP Version: 7.1.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -73,36 +75,8 @@ INSERT INTO `modules` (`id`, `name`, `main_name`, `sort`, `icon`, `url`, `user_i
 (9, 'Team', 'team', 5, 'home', 'team', 2),
 (10, 'Product', 'product', 6, 'home', 'product', 2),
 (11, 'Distribution', 'distribution', 7, 'home', 'distribution', 2),
-(12, 'Sales', 'order', 8, 'home', 'order', 2),
-(13, 'Order', 'orderlist', 9, 'home', 'orderlist', 2);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order_table`
---
-
-CREATE TABLE `order_table` (
-  `id` int(11) NOT NULL,
-  `Distribution_code` varchar(100) NOT NULL,
-  `Packcode` varchar(100) NOT NULL,
-  `Datename` varchar(100) NOT NULL,
-  `Sales` varchar(100) NOT NULL,
-  `Closing` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `order_table`
---
-
-INSERT INTO `order_table` (`id`, `Distribution_code`, `Packcode`, `Datename`, `Sales`, `Closing`, `user_id`) VALUES
-(1, '312321', '184850', '2017-12-20', '55', 0, 2),
-(3, '312321', '184850', '2017-12-21', '55', 0, 2),
-(4, '123213', '184850', '2017-12-29', '545', 444, 2),
-(5, '312321', '184850', '2017-12-20', '0', 0, 2),
-(6, '312321', '184850', '2017-12-21', '0', 0, 2),
-(7, '123213', '184850', '2017-12-29', '444', 0, 2);
+(12, 'Sales', 'sales', 8, 'home', 'sales', 2),
+(13, 'Order', 'orders', 9, 'home', 'orders', 2);
 
 -- --------------------------------------------------------
 
@@ -134,15 +108,15 @@ INSERT INTO `permission` (`id`, `module_id`, `user_id`, `user_type_id`, `view`, 
 (35, 2, 2, 14, 1, 0, 0, 0, 0, 0),
 (36, 3, 2, 14, 0, 0, 0, 0, 0, 0),
 (37, 5, 2, 14, 0, 0, 0, 0, 0, 0),
-(112, 2, 2, 1, 1, 1, 1, 1, 1, 1),
-(113, 3, 2, 1, 1, 1, 1, 1, 1, 1),
-(114, 5, 2, 1, 1, 1, 1, 1, 1, 1),
-(115, 7, 2, 1, 1, 1, 1, 1, 1, 1),
-(116, 9, 2, 1, 1, 1, 1, 1, 1, 1),
-(117, 10, 2, 1, 1, 1, 1, 1, 1, 1),
-(118, 11, 2, 1, 1, 1, 1, 1, 1, 1),
-(119, 12, 2, 1, 1, 1, 1, 1, 1, 1),
-(120, 13, 2, 1, 1, 1, 1, 1, 1, 1);
+(121, 2, 2, 1, 1, 1, 1, 1, 1, 1),
+(122, 3, 2, 1, 1, 1, 1, 1, 1, 1),
+(123, 5, 2, 1, 1, 1, 1, 1, 1, 1),
+(124, 7, 2, 1, 1, 1, 1, 1, 1, 1),
+(125, 9, 2, 1, 1, 1, 1, 1, 1, 1),
+(126, 10, 2, 1, 1, 1, 1, 1, 1, 1),
+(127, 11, 2, 1, 1, 1, 1, 1, 1, 1),
+(128, 12, 2, 1, 1, 1, 1, 1, 1, 1),
+(129, 13, 2, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -167,6 +141,29 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`id`, `product_name`, `description`, `product_code`, `team`, `scm_product_code`, `tp_product`, `user_id`) VALUES
 (1, 'ACTIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 184850, 'abcde', 3, 1000, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sales`
+--
+
+CREATE TABLE `sales` (
+  `id` int(11) NOT NULL,
+  `distribution_code` varchar(100) NOT NULL,
+  `packcode` varchar(100) NOT NULL,
+  `date` date NOT NULL,
+  `sales` varchar(100) NOT NULL,
+  `closing` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sales`
+--
+
+INSERT INTO `sales` (`id`, `distribution_code`, `packcode`, `date`, `sales`, `closing`, `user_id`) VALUES
+(10, '000449', '184850', '2017-12-31', '4343', 3434, 2);
 
 -- --------------------------------------------------------
 
@@ -265,12 +262,6 @@ ALTER TABLE `modules`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `order_table`
---
-ALTER TABLE `order_table`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `permission`
 --
 ALTER TABLE `permission`
@@ -284,6 +275,12 @@ ALTER TABLE `product`
   ADD UNIQUE KEY `product_code` (`product_code`),
   ADD UNIQUE KEY `scm_product_code` (`scm_product_code`),
   ADD KEY `product_ibfk_1` (`user_id`);
+
+--
+-- Indexes for table `sales`
+--
+ALTER TABLE `sales`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `team`
@@ -321,20 +318,20 @@ ALTER TABLE `distribution`
 ALTER TABLE `modules`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
--- AUTO_INCREMENT for table `order_table`
---
-ALTER TABLE `order_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
---
 -- AUTO_INCREMENT for table `permission`
 --
 ALTER TABLE `permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `sales`
+--
+ALTER TABLE `sales`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `team`
 --
@@ -371,6 +368,7 @@ ALTER TABLE `product`
 --
 ALTER TABLE `team`
   ADD CONSTRAINT `team_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
