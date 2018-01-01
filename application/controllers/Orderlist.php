@@ -17,8 +17,25 @@ class Orderlist extends MY_Controller {
     }
 
     public function index()
+    {
+    	if ( $this->permission['view'] == '0' && $this->permission['view_all'] == '0' ) 
+		{
+			redirect('home');
+		}
+		$this->data['title'] = 'Order';
+		if ( $this->permission['view_all'] == '1'){
+			$this->data['orders'] = $this->Orderlist_model->all_rows('order_table');
+		}
+		elseif ($this->permission['view'] == '1') {
+			$this->data['orders'] = $this->Orderlist_model->get_rows('order_table',array('user_id'=>$this->id));
+		}
+		$this->data['permission'] = $this->permission;
+		$this->load->template('orderlist/index',$this->data);
+    }
+
+    public function Add()
 	{
-		if ($this->permission['view'] == '0' || $this->permission['view_all'] == '0') 
+		if ( $this->permission['created'] == '0') 
 		{
 			redirect('home');
 		}
@@ -30,7 +47,7 @@ class Orderlist extends MY_Controller {
 		elseif ($this->dis_permission['view'] == '1') {
 			$this->data['distributions'] = $this->Orderlist_model->get_rows('distribution',array('user_id'=>$this->id));
 		}
-		$this->load->template('orderlist/orderlist_sort',$this->data);
+		$this->load->template('orderlist/add',$this->data);
 	}
 
     public function create()
@@ -49,7 +66,7 @@ class Orderlist extends MY_Controller {
 			$this->data['products_details'] = $this->Orderlist_model->get_rows('product',array('user_id'=>$this->id));
 		}
 		$this->data['permission'] = $this->permission;
-		$this->data['title'] = 'View Show';
+		$this->data['title'] = 'Create Order';
 		$this->load->template('orderlist/show',$this->data);
 	}
 
