@@ -40,4 +40,19 @@ class MY_Model extends CI_Model
         $insert_id = $this->db->insert_id();
         return $insert_id;
     }
+
+    public function query($query)
+    {
+        return $this->db->query($query);
+    }
+
+    public function query_result($query)
+    {
+        return $this->db->query($query)->result_array();
+    }
+
+    public function query_single_result($query)
+    {
+        return $this->db->query($query)->row_array();
+    }
 }
