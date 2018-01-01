@@ -13,31 +13,22 @@ class Order extends MY_Controller {
         $this->permission = $this->get_permission($this->module,$this->user_type);
 	}
 
-
-
-
 	public function index()
 	{
 		if ( $this->permission['view'] == '0' && $this->permission['view_all'] == '0' ) 
 		{
 			redirect('home');
 		}
-		$this->data['title'] = 'Order';
+		$this->data['title'] = 'Sales';
 		if ( $this->permission['view_all'] == '1'){
 			$this->data['orders'] = $this->Order_model->order_detail();
-
-			// echo '<pre>';print_r($this->data['order_detail']);die;
 		}
 		elseif ($this->permission['view'] == '1') {
 			$this->data['orders'] = $this->Order_model->get_rows('order_table',array('user_id'=>$this->id));
-
-			print_r($this->data['order_table']);die;
 		}
 		$this->data['permission'] = $this->permission;
 		$this->load->template('order/index',$this->data);
 	}
-
-
 
 	public function create()
 	{
@@ -45,13 +36,12 @@ class Order extends MY_Controller {
 		{
 			redirect('home');
 		}
-		$this->data['title'] = 'Create Orders';
+		$this->data['title'] = 'Create Sales';
 		$this->data['orders'] = $this->Order_model->all_rows('order_table');
 		$this->data['products'] = $this->Order_model->all_rows('product');
 		$this->data['distributions'] = $this->Order_model->all_rows('distribution');
 		$this->load->template('order/create',$this->data);
 	}
-
 
 	public function insert()
 	{
@@ -67,25 +57,18 @@ class Order extends MY_Controller {
 		}
 	}
 
-
-
 	public function edit($id)
 	{
 		if ($this->permission['edit'] == '0') 
 		{
 			redirect('home');
 		}
-		$this->data['title'] = 'Edit Orders';
+		$this->data['title'] = 'Edit Sales';
 		$this->data['distributions'] = $this->Order_model->all_rows('distribution');
 		$this->data['products'] = $this->Order_model->all_rows('product');
 		$this->data['orders'] = $this->Order_model->get_row_single('order_table',array('id'=>$id));
-		// print_r($this->data['orders']);die;
-
-
 		$this->load->template('order/edit',$this->data);
 	}
-
-
 
 	public function update()
 	{
@@ -101,8 +84,6 @@ class Order extends MY_Controller {
 			redirect('order');
 		}
 	}
-
-
 
 	public function delete($id)
 	{
@@ -120,7 +101,6 @@ class Order extends MY_Controller {
 	    $filename = "order.csv";
 	    $f = fopen('php://memory', 'w');
 		$products_csv_upload = $this->Order_model->all_rows('order_table');
-		// echo '<pre>';print_r($products_csv_upload);die;		
 		foreach($products_csv_upload as $row){
 			$lineData = array($row['Distribution_code'],$row['Packcode'],$row['Datename'],$row['Sales'],$row['Closing']);
 			fputcsv($f,$lineData, $delimiter);
@@ -130,8 +110,6 @@ class Order extends MY_Controller {
     	header('Content-Disposition: attachment; filename="' . $filename . '";');
     	fpassthru($f);		
 	}
-
-
 
 	public function csv_upload()
 	{
@@ -166,13 +144,4 @@ class Order extends MY_Controller {
 			echo 'This File Is Not Supported';die();
 		}
 	}
-
-
-
-
-
-
-
-
-
 }
