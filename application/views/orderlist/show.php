@@ -30,11 +30,11 @@
                                 <div class="panel-heading">
                                     <div class="panel-title">
                                         <h4>View Product</h4>
-                                        <?php 
+                                       <!--  <?php 
                                             if ($permission['created'] == '1') {
                                         ?>
                                         <a href="<?php echo base_url('product/create') ?>"><button class="btn btn-info pull-right">Add Product</button></a>
-                                        <?php } ?>
+                                        <?php } ?> -->
 
                                         <button type="button" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#myModal">Import Csv</button>
 
@@ -50,7 +50,8 @@
                                         <table id="dataTableExample2" class="table table-bordered table-striped table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Id</th>
+                                                    <th>S.no</th>
+                                                    <th>Distributor Code</th>
                                                     <th>Distributor Name</th>
                                                     <th>Products</th>
                                                     <th>SCM Product Code</th>
@@ -74,13 +75,20 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <?php foreach($products_details as $products_detail){ ?>
+                                            <?php 
+                                            $con = 0;
+                                            foreach($products_details as $products_detail){ 
+                                                $con++;
+                                            ?>
                                                 <tr>
-                                                    <td></td>
-                                        <td><?php echo $distribution[0]['scm_name']; ?></td>
+                                                    <td><?php echo $con ?></td>
+                                                    <td><?php echo $distribution['scm_code']; ?></td>
+                                        <td><?php echo $distribution['scm_name']; ?></td>
                                         <td><?php echo $products_detail['product_name']; ?></td>
                                         <td><?php echo $products_detail['scm_product_code']; ?></td>
                                         <td><?php echo $products_detail['product_code']; ?></td>
+                                        <td></td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
