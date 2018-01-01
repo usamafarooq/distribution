@@ -30,7 +30,7 @@
 										<?php 
 											if ($permission['created'] == '1') {
 										?>
-										<a href="<?php echo base_url('orderlist/add') ?>"><button class="btn btn-info pull-right">Add Order</button></a>
+										<a href="<?php echo base_url('orders/add') ?>"><button class="btn btn-info pull-right">Add Order</button></a>
 										<?php } ?>
 
 										<button type="button" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#myModal">Import Csv</button>

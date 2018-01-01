@@ -11,12 +11,12 @@
 							<i class="pe-7s-box1"></i>
 						</div>
 						<div class="header-title">
-							<h1>View Order</h1>
+							<h1>View Sales</h1>
 							<small> </small>
 							<ol class="breadcrumb">
 								<li><a href="<?php echo base_url() ?>"><i class="pe-7s-home"></i> Home</a></li>
 
-								<li class="active">View Order</li>
+								<li class="active">View Sales</li>
 							</ol>
 						</div>
 					</div> <!-- /. Content Header (Page header) -->
@@ -26,11 +26,11 @@
 							<div class="panel panel-bd">
 								<div class="panel-heading">
 									<div class="panel-title">
-										<h4>View Order</h4>
+										<h4>View Sales</h4>
 										<?php 
 											if ($permission['created'] == '1') {
 										?>
-										<a href="<?php echo base_url('order/create') ?>"><button class="btn btn-info pull-right">Add Order</button></a>
+										<a href="<?php echo base_url('sales/create') ?>"><button class="btn btn-info pull-right">Add Sale</button></a>
 										<?php } ?>
 
 										<button type="button" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#myModal">Import Csv</button>
@@ -50,7 +50,7 @@
 													<th>Id</th>
 													<th>Distribution</th>
 													<th>Packcode</th>
-													<th>Datename</th>
+													<th>Date</th>
 													<th>Sales</th>
 													<th>Closing</th>
 													
@@ -72,9 +72,9 @@
 										<?php echo $order['scm_name'] ?>	
 										</td>
 										<td><?php echo $order['product_name'] ?></td>
-										<td><?php echo $order['Datename'] ?></td>
-										<td><?php echo $order['Sales'] ?></td>
-										<td><?php echo $order['Closing'] ?></td>
+										<td><?php echo $order['date'] ?></td>
+										<td><?php echo $order['sales'] ?></td>
+										<td><?php echo $order['closing'] ?></td>
 
 													<?php 
 														if ($permission['edit'] == '1' || $permission['deleted'] == '1'){
@@ -83,12 +83,12 @@
 														<?php 
 															if ($permission['edit'] == '1') {
 														?>
-														<a href="<?php echo base_url() ?>order/edit/<?php echo $order['id'] ?>"><img src="<?php echo base_url() ?>assets/record1.png" title="View Order" alt="View Order" width="35" height="35"></a>
+														<a href="<?php echo base_url() ?>sales/edit/<?php echo $order['id'] ?>"><img src="<?php echo base_url() ?>assets/record1.png" title="View Order" alt="View Order" width="35" height="35"></a>
 														<?php } ?>
 														<?php 
 															if ($permission['deleted'] == '1') {
 														?>
-		                                                <a href="<?php echo base_url() ?>order/delete/<?php echo $order['id'] ?>"><img src="<?php echo base_url() ?>assets/d-icon.png" title="Delete" alt="Delete" width="35" height="35"></a>
+		                                                <a href="<?php echo base_url() ?>sales/delete/<?php echo $order['id'] ?>"><img src="<?php echo base_url() ?>assets/d-icon.png" title="Delete" alt="Delete" width="35" height="35"></a>
 		                                                <?php } ?>
 	                                                </td>
 	                                                <?php } ?>
