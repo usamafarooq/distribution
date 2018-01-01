@@ -21,7 +21,7 @@
         </div>
         <!-- /. Content Header (Page header) -->
 
-        <form method="post" action="<?php echo base_url() ?>orderlist/sort_show" enctype="multipart/form-data">
+        <form method="post" action="<?php echo base_url() ?>orderlist/create" enctype="multipart/form-data">
 
             <div class="row">
                 <div class="col-sm-12">
@@ -38,7 +38,7 @@
     <label for="example-text-input" class="col-sm-3 col-form-label">Distribution_code<span class="required">*</span></label>
     <div class="col-sm-9">
     <select name="distribution_sort" class="form-control" required>
-  <option value="">Please Select Team</option>
+  <option value="">Please Select Distribution</option>
   <?php foreach($distributions as $distribution){ ?>
   <option value="<?php echo $distribution['scm_code']; ?>"><?php echo $distribution['scm_name']; ?></option>
     <?php } ?>

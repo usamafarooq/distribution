@@ -35,10 +35,10 @@
 
 
     <div class="form-group row">
-    <label for="example-text-input" class="col-sm-3 col-form-label">Distribution_code<span class="required">*</span></label>
+    <label for="example-text-input" class="col-sm-3 col-form-label">Distribution<span class="required">*</span></label>
     <div class="col-sm-9">
     <select name="Distribution_code" class="form-control" required>
-  <option value="">Please Select Team</option>
+  <option value="">Please Select Distrbution</option>
   <?php foreach($distributions as $distribution){ ?>
   <option value="<?php echo $distribution['scm_code']; ?>"><?php echo $distribution['scm_name']; ?></option>
     <?php } ?>
@@ -47,10 +47,10 @@
     </div>
 
     <div class="form-group row">
-    <label for="example-text-input" class="col-sm-3 col-form-label">Packcode<span class="required">*</span></label>
+    <label for="example-text-input" class="col-sm-3 col-form-label">Product<span class="required">*</span></label>
     <div class="col-sm-9">
     <select name="Packcode" class="form-control" required>
-  <option value="">Please Select Team</option>
+  <option value="">Please Select TeaProduct</option>
   <?php foreach($products as $product){ ?>
   <option value="<?php echo $product['product_code']; ?>"><?php echo $product['product_name']; ?></option>
     <?php } ?>
