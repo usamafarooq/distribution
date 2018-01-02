@@ -119,22 +119,16 @@ class Product extends MY_Controller {
 				$handle = fopen($_FILES['csv_name']['tmp_name'], "r");
 				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 					if (!empty($data[0])) {
-
-// print_r($data);die;						
-
-$query = "SELECT * FROM `product` WHERE LTRIM(`product_code`) = ".$data[2];
-$product_code_ckeck = $this->Product_model->query_single_result($query);
-// $str = $this->db->last_query();
-// print_r($product_code_ckeck);die;	
-
-if (empty($product_code_ckeck)) {
-
-$query_scm = "SELECT * FROM `product` WHERE LTRIM(`scm_product_code`) = ".$data[4];
-$scm_product_code = $this->Product_model->query_single_result($query_scm);
-
-// print_r($scm_product_code);die;
-if (empty($scm_product_code)) {
-
+				$data_value = $data[2];
+				$column = 'product_code';
+				$table_data = 'product';
+				$product_code_ckeck = $this->Product_model->view_scm_code_ckeck($column,$data_value,$table_data);	
+				if (empty($product_code_ckeck)) {
+				$data_value = $data[4];
+				$column = 'scm_product_code';
+				$table_data = 'product';
+				$scm_product_code = $this->Product_model->view_scm_code_ckeck($column,$data_value,$table_data);
+				if (empty($scm_product_code)) {
 						$products_insert[] = array(
 							'user_id' => $this->session->userdata('user_id'),
 							'product_name' => $data[0],
@@ -144,13 +138,12 @@ if (empty($scm_product_code)) {
 							'scm_product_code' => $data[4],
 							'tp_product' => $data[5],
 								);
-	$data_response = $this->Product_model->insert_batch('product',$products_insert);
+						$data_response = $this->Product_model->insert_batch('product',$products_insert);
 							}
 							else
 							{
 								redirect('product');
 							}
-	
 						}
 						else
 						{
