@@ -31,7 +31,7 @@ class MY_Controller extends CI_Controller {
         return $permission;
     }
 
-    public function create_module($module_name)
+    public function create_module($module_name,$fileds,$tablename)
     {
     	$file = $_SERVER['DOCUMENT_ROOT'].'/distribution/application/models/'.ucfirst($module_name).'.php';
 		if(!is_file($file)){
@@ -40,12 +40,41 @@ class MY_Controller extends CI_Controller {
 		    $contents .= 'class '.ucfirst($module_name).' extends MY_Model{
 
 		    	';
+		    $key = array_search('1', array_column($fileds, 'is_relation'));
+        	if (array_key_exists($key,$fileds)) {
+        		$keys = array();
+        		foreach ($fileds as $f) {
+					if ($f['is_relation'] == 1) {
+						$column = explode(',', $f['value_column']);
+						for ($i=0; $i < sizeof($column); $i++) { 
+							$keys[] = $f['relation_table'].'.'.$column[$i];
+						}
+					}
+				}
+        		$contents .= "public function get_".$tablename."(%id = null)
+				{
+					%this->db->select('".$tablename.".*,".implode(',', $keys)."')
+							 ->from('".$tablename."')";
+					foreach ($fileds as $f) {
+						if ($f['is_relation'] == 1) {
+							$contents .= "->join('".$f['relation_table']."', '".$f['relation_table'].".".$f['relation_column']." = ".$tablename.".".$f['name']."');";
+						}
+					}
+					$contents .= "if (%id != null) {
+							%this->db->where('".$tablename.".user_id', %id);
+						}";
+					$contents .= "return %this->db->get()->result_array();
+				}";
+        	}
 		    $contents .= '}';
+		    if (array_key_exists($key,$fileds)) {
+		    	$contents = str_replace("%","$",$contents);
+		    }
 		    file_put_contents($file, $contents);
 		}
     }
 
-    public function create_controller($controller_name,$module_name,$tablename)
+    public function create_controller($controller_name,$module_name,$tablename,$fileds)
     {
     	$file = $_SERVER['DOCUMENT_ROOT'].'/distribution/application/controllers/'.ucfirst($controller_name).'.php';
 		if(!is_file($file)){
@@ -55,9 +84,9 @@ class MY_Controller extends CI_Controller {
 
 		    	';
 		    $contents .= $this->create_construct($module_name,$tablename);	
-		    $contents .= $this->create_index($controller_name,$tablename,$module_name);	
-		    $contents .= $this->create_create($controller_name,$tablename,$module_name);
-		    $contents .= $this->create_edit($controller_name,$tablename,$module_name);	
+		    $contents .= $this->create_index($controller_name,$tablename,$module_name,$fileds);	
+		    $contents .= $this->create_create($controller_name,$tablename,$module_name,$fileds);
+		    $contents .= $this->create_edit($controller_name,$tablename,$module_name,$fileds);	
 		    $contents .= $this->create_delete($controller_name,$tablename,$module_name);	
 		    $contents .= '}';
 		    $contents = str_replace("%","$",$contents);
@@ -78,36 +107,55 @@ class MY_Controller extends CI_Controller {
 	    }";
     }
 
-    public function create_index($controller_name,$tablename,$module_name)
+    public function create_index($controller_name,$tablename,$module_name,$fileds)
     {
-    	return "public function index()
+    	$contents = "public function index()
 		{
 			if ( %this->permission['view'] == '0' && %this->permission['view_all'] == '0' ) 
 			{
 				redirect('home');
 			}
 			%this->data['title'] = '".ucfirst($controller_name)."';
-			if ( %this->permission['view_all'] == '1'){
-				%this->data['".$controller_name."'] = %this->".ucfirst($module_name)."->all_rows('".$tablename."');
+			if ( %this->permission['view_all'] == '1'){";
+			$key = array_search('1', array_column($fileds, 'is_relation'));
+        	if (array_key_exists($key,$fileds)) {
+        		$contents .= "%this->data['".$controller_name."'] = %this->".ucfirst($module_name)."->get_".$tablename."();";
+        	}
+			else{
+				$contents .= "%this->data['".$controller_name."'] = %this->".ucfirst($module_name)."->all_rows('".$tablename."');";
+			}	
+			$contents .="}
+			elseif (%this->permission['view'] == '1') {";
+			$key = array_search('1', array_column($fileds, 'is_relation'));
+        	if (array_key_exists($key,$fileds)) {
+        		$contents .= "%this->data['".$controller_name."'] = %this->".ucfirst($module_name)."->get_".$tablename."(%this->id);";
+        	}
+			else{
+				$contents .= "%this->data['".$controller_name."'] = %this->".ucfirst($module_name)."get_rows('".$tablename."',array('user_id'=>%this->id));";
 			}
-			elseif (%this->permission['view'] == '1') {
-				%this->data['".$controller_name."'] = %this->".ucfirst($module_name)."->get_rows('".$tablename."',array('user_id'=>%this->id));
-			}
+				// %this->data['".$controller_name."'] = %this->".ucfirst($module_name)."->get_rows('".$tablename."',array('user_id'=>%this->id));
+			$contents .="}
 			%this->data['permission'] = %this->permission;
 			%this->load->template('".$controller_name."/index',%this->data);
 		}";
+		return $contents;
     }
 
-    public function create_create($controller_name,$tablename,$module_name)
+    public function create_create($controller_name,$tablename,$module_name,$fileds)
     {
-    	return "public function create()
+    	$contents = "public function create()
 		{
 			if ( %this->permission['created'] == '0') 
 			{
 				redirect('home');
 			}
-			%this->data['title'] = 'Create ".ucfirst($controller_name)."';
-			%this->load->template('".$controller_name."/create',%this->data);
+			%this->data['title'] = 'Create ".ucfirst($controller_name)."';";
+			foreach ($fileds as $f) {
+				if ($f['is_relation'] == 1) {
+					$contents .= "%this->data['".$f['relation_table']."'] = %this->User_model->all_rows('".$f['relation_table']."');";
+				}
+			}
+			$contents .= "%this->load->template('".$controller_name."/create',%this->data);
 		}
 		public function insert()
 		{
@@ -122,19 +170,25 @@ class MY_Controller extends CI_Controller {
 				redirect('".$controller_name."');
 			}
 		}";
+		return $contents;
     }
 
-    public function create_edit($controller_name,$tablename,$module_name)
+    public function create_edit($controller_name,$tablename,$module_name,$fileds)
     {
-    	return "public function edit(%id)
+    	$contents = "public function edit(%id)
 		{
 			if (%this->permission['edit'] == '0') 
 			{
 				redirect('home');
 			}
 			%this->data['title'] = 'Edit ".ucfirst($controller_name)."';
-			%this->data['".$controller_name."'] = %this->".ucfirst($module_name)."->get_row_single('".$tablename."',array('id'=>%id));
-			%this->load->template('".$controller_name."/edit',%this->data);
+			%this->data['".$controller_name."'] = %this->".ucfirst($module_name)."->get_row_single('".$tablename."',array('id'=>%id));";
+			foreach ($fileds as $f) {
+				if ($f['is_relation'] == 1) {
+					$contents .= "%this->data['".$f['relation_table']."'] = %this->User_model->all_rows('".$f['relation_table']."');";
+				}
+			}
+			$contents .= "%this->load->template('".$controller_name."/edit',%this->data);
 		}
 
 		public function update()
@@ -151,6 +205,7 @@ class MY_Controller extends CI_Controller {
 				redirect('".$controller_name."');
 			}
 		}";
+		return $contents;
     }
 
     public function create_delete($controller_name,$tablename,$module_name)

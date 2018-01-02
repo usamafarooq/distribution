@@ -54,12 +54,19 @@ class Modules extends MY_Controller {
 		}
 	}
 
+	public function get_colume($table)
+	{
+		$result = $this->Modules_model->query('SHOW COLUMNS FROM '.$table)->result_array();
+		echo json_encode($result);
+	}
+
 	public function fileds($id)
 	{
 		if ( $this->permission['created'] == '0') 
 		{
 			redirect('home');
 		}
+		$this->data['tables'] = $this->db->list_tables();
 		$this->data['id'] = $id;
 		$this->data['title'] = 'Create Fileds';
 		$this->load->template('module/fileds',$this->data);
@@ -67,6 +74,7 @@ class Modules extends MY_Controller {
 
 	public function fields_insert()
 	{
+		//print_r($_POST['value']);die;
 		$id = $this->input->post('module_id');
 		$module = $this->Modules_model->get_row_single('modules',array('id'=>$id));
 		$tablename = $module['main_name'];
@@ -75,7 +83,36 @@ class Modules extends MY_Controller {
 		$type = $this->input->post('type');
 		$length = $this->input->post('length');
 		$required = $this->input->post('required');
-		for ($i=0; $i < sizeof($name); $i++) { 
+
+		// relation columns
+		$relation = $this->input->post('relation_table');
+		$table = $this->input->post('table');
+		$relation_column = $this->input->post('relation');
+		$against_column = $this->input->post('against');
+		$value_column = $this->input->post('value');
+
+		for ($i=0; $i < sizeof($name); $i++) {
+			if ($relation == 'yes') {
+			 	$key = array_search($name[$i], $against_column);
+		        if (array_key_exists($key,$against_column)) {
+		          	$is_relation = '1';
+		          	$is_table = $table[$key];
+		          	$is_relation_column = $relation_column[$key];
+		          	$is_value_column = implode(',', $value_column[$key]);
+		        }
+		        else{
+		        	$is_relation = '0';
+			        $is_table = NULL;
+			        $is_relation_column = NULL;
+			        $is_value_column = NULL;
+		        }
+			}
+			else{
+				$is_relation = '0';
+		        $is_table = NULL;
+		        $is_relation_column = NULL;
+		        $is_value_column = NULL;
+			} 
 			$text = str_replace(" ","_",$name[$i]);
 			$fileds[] = array(
 				'name' => $text, 
@@ -83,6 +120,10 @@ class Modules extends MY_Controller {
 				'length' => $length[$i], 
 				'required' => (isset($required[$i])) ? 1 : 0, 
 				'module_id' => $id, 
+				'is_relation' => $is_relation, 
+				'relation_table' => $is_table, 
+				'relation_column' => $is_relation_column, 
+				'value_column' => $is_value_column, 
 			);
 			$filed[$i] = $text;
 			$filed[$i] .= ' '.$type[$i];
@@ -94,8 +135,27 @@ class Modules extends MY_Controller {
 		$this->Modules_model->insert_batch('modules_fileds',$fileds);
 		$query = 'CREATE TABLE IF NOT EXISTS '.$tablename.' (id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY, '.implode(',', $filed).', user_id int(11) NOT NULL)';
 		$q = $this->Modules_model->query($query);
+		$this->session->set_userdata('url',$url);
+		$this->session->set_userdata('tablename',$tablename);
+		$this->session->set_userdata('fileds',$fileds);
+		die;
 		$this->create_module($url.'_model');
 		$this->create_controller($url,$url.'_model',$tablename);
+		$this->create_folder($url);
+		$this->create_main_view($url,$url.'_model',$tablename,$fileds);
+		$this->create_create_view($url,$url.'_model',$tablename,$fileds);
+		$this->create_edit_view($url,$url.'_model',$tablename,$fileds);
+		redirect('modules');
+	}
+
+	public function create_data()
+	{
+		$url = $this->session->userdata('url');
+		$tablename = $this->session->userdata('tablename');
+		$fileds = $this->session->userdata('fileds');
+		$this->create_module($url.'_model',$fileds,$tablename);
+		$this->create_controller($url,$url.'_model',$tablename,$fileds);
+		echo $url;die;
 		$this->create_folder($url);
 		$this->create_main_view($url,$url.'_model',$tablename,$fileds);
 		$this->create_create_view($url,$url.'_model',$tablename,$fileds);
