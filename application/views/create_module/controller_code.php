@@ -1,7 +1,8 @@
 <?php
+$content = "<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Modules extends MY_Controller {
+class Testing extends MY_Controller {
 	
 	public function __construct()
     {
@@ -50,57 +51,8 @@ class Modules extends MY_Controller {
 		$data['user_id'] = $this->session->userdata('user_id');
 		$id = $this->Modules_model->insert('modules',$data);
 		if ($id) {
-			redirect('modules/fileds/'.$id);
+			redirect('modules');
 		}
-	}
-
-	public function fileds($id)
-	{
-		if ( $this->permission['created'] == '0') 
-		{
-			redirect('home');
-		}
-		$this->data['id'] = $id;
-		$this->data['title'] = 'Create Fileds';
-		$this->load->template('module/fileds',$this->data);
-	}
-
-	public function fields_insert()
-	{
-		$id = $this->input->post('module_id');
-		$module = $this->Modules_model->get_row_single('modules',array('id'=>$id));
-		$tablename = $module['main_name'];
-		$url = $module['url'];
-		$name = $this->input->post('name');
-		$type = $this->input->post('type');
-		$length = $this->input->post('length');
-		$required = $this->input->post('required');
-		for ($i=0; $i < sizeof($name); $i++) { 
-			$text = str_replace(" ","_",$name[$i]);
-			$fileds[] = array(
-				'name' => $text, 
-				'type' => $type[$i], 
-				'length' => $length[$i], 
-				'required' => (isset($required[$i])) ? 1 : 0, 
-				'module_id' => $id, 
-			);
-			$filed[$i] = $text;
-			$filed[$i] .= ' '.$type[$i];
-			if ($type[$i] != 'DATE') {
-				$filed[$i] .= '('.$length[$i].')';
-			}
-			$filed[$i] .= (isset($required[$i])) ? ' NOT NULL' : ' NULL';
-		}
-		$this->Modules_model->insert_batch('modules_fileds',$fileds);
-		$query = 'CREATE TABLE IF NOT EXISTS '.$tablename.' (id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY, '.implode(',', $filed).', user_id int(11) NOT NULL)';
-		$q = $this->Modules_model->query($query);
-		$this->create_module($url.'_model');
-		$this->create_controller($url,$url.'_model',$tablename);
-		$this->create_folder($url);
-		$this->create_main_view($url,$url.'_model',$tablename,$fileds);
-		$this->create_create_view($url,$url.'_model',$tablename,$fileds);
-		$this->create_edit_view($url,$url.'_model',$tablename,$fileds);
-		redirect('modules');
 	}
 
 	public function edit($id)
@@ -139,4 +91,5 @@ class Modules extends MY_Controller {
 		redirect('modules');
 	}
 
-}
+}";
+?>
