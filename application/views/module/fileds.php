@@ -64,6 +64,41 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-3 col-form-label ">Relation<span class="required">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control relation" name="relation_table[]" required="">
+                                            <option>Select Relation</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="hide-div row" style="display: none;">
+                                    <div class="form-group col-md-4">
+                                        <label>Table</label><br>
+                                        <select name="table[]" class="form-control table">
+                                            <option>Select Table</option>
+                                            <?php 
+                                                for ($i=0; $i < sizeof($tables); $i++) { 
+                                                    echo '<option value="'.$tables[$i].'">'.ucfirst($tables[$i]).'</option>';
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Relation Colume</label><br>
+                                        <select name="relation[]" class="form-control relation_column">
+                                            <option>Select Colume</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Value Colume</label><br>
+                                        <select name="value[]" class="form-control value">
+                                            <option>Select Colume</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <div class="col-lg-2 delet pull-right">
                                         <button type="button" class="add-sub btn btn-success ">Add More</button>
                                     </div>
@@ -96,11 +131,13 @@
         $(".after-add-sub").last().after(html);
         $(".after-add-sub").last().find('input,select').not('input[type="checkbox"]').val('')
         $(".after-add-sub").last().find('input[type="checkbox"]').removeAttr('checked')
+        $(".after-add-sub").last().find('.hide-div').hide()
         var con = 0
         $(".after-add-sub").each(function() {
             $(this).find('input[type="checkbox"]').attr('name','required['+con+']')
             con++
         })
+        get_tables()
     });
     $("body").on("click",".remove",function(){
         $(this).parents(".after-add-sub").remove();
@@ -110,4 +147,46 @@
             con++
         })
     });
+    function get_tables() {
+        $('.relation').change(function() {
+            if($(this).val() == 'yes'){
+                $(this).parent().parent().parent().find('.hide-div').show()
+            }
+            else{
+                $(this).parent().parent().parent().find('.hide-div').hide()
+            }
+        })
+        $('.table').change(function() {
+            var th = $(this)
+            var relation = th.parent().parent().find('.relation_column')
+            var value_column = th.parent().parent().find('.value')
+            if($(this).val()){
+                var value = $(this).val()
+                $.ajax({
+                  type: "GET",
+                  url: "<?php echo base_url('modules/get_colume/') ?>"+value,
+                  dataType: 'json',
+                  success: function(html)
+                  {
+                    //var html = JSON.stringify(html);
+                    relation.empty();
+                    value_column.empty();
+                    relation.append('<option>Select Colume</option>')
+                    value_column.append('<option>Select Colume</option>')
+                    for (var i = 0; i < html.length; i++) {
+                        console.log(html[i])
+                        value_column.append('<option value="'+html[i]['Field']+'">'+html[i]['Field']+'</option>')
+                        var type = html[i]['Type']
+                        type = type.split('(')
+                        type = type[0]
+                        if(type == 'int'){
+                            relation.append('<option value="'+html[i]['Field']+'">'+html[i]['Field']+'</option>')
+                        }
+                    }
+                  }
+                });
+            }
+        })
+    }
+    get_tables()
 </script>
