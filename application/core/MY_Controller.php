@@ -146,7 +146,7 @@ class MY_Controller extends CI_Controller {
 			%data = %this->input->post();
 			%id = %data['id'];
 			unset(%data['id']);
-			%id = %this->Modules_model->update('".$tablename."',%data,array('id'=>%id));
+			%id = %this->".ucfirst($module_name)."->update('".$tablename."',%data,array('id'=>%id));
 			if (%id) {
 				redirect('".$controller_name."');
 			}
@@ -164,6 +164,53 @@ class MY_Controller extends CI_Controller {
 			%this->".ucfirst($module_name)."->delete('".$tablename."',array('id'=>%id));
 			redirect('".$controller_name."');
 		}";
+    }
+
+    public function create_folder($url)
+    {
+    	$directoryName = $_SERVER['DOCUMENT_ROOT'].'/distribution/application/views/'.$url;
+		if(!is_dir($directoryName)){
+		    mkdir($directoryName, 0755);
+		}
+    }
+
+    public function create_main_view($controller_name,$module_name,$tablename,$fileds)
+    {
+    	$file = $_SERVER['DOCUMENT_ROOT'].'/distribution/application/views/'.$controller_name.'/index.php';
+		if(!is_file($file)){
+		    include 'create_index.php';
+		    $contents = str_replace("%","$",$contents);
+		    file_put_contents($file, $contents);
+		}
+		else{
+			echo '1';
+		}
+    }
+
+    public function create_create_view($controller_name,$module_name,$tablename,$fileds)
+    {
+    	$file = $_SERVER['DOCUMENT_ROOT'].'/distribution/application/views/'.$controller_name.'/create.php';
+		if(!is_file($file)){
+		    include 'create_create.php';
+		    $contents = str_replace("%","$",$contents);
+		    file_put_contents($file, $contents);
+		}
+		else{
+			echo '1';
+		}
+    }
+
+    public function create_edit_view($controller_name,$module_name,$tablename,$fileds)
+    {
+    	$file = $_SERVER['DOCUMENT_ROOT'].'/distribution/application/views/'.$controller_name.'/edit.php';
+		if(!is_file($file)){
+		    include 'create_edit.php';
+		    $contents = str_replace("%","$",$contents);
+		    file_put_contents($file, $contents);
+		}
+		else{
+			echo '1';
+		}
     }
 
 }

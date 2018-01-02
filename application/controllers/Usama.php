@@ -1,11 +1,11 @@
 <?php
-		    class Testing extends MY_Controller{
+		    class Usama extends MY_Controller{
 
 		    	public function __construct()
 	    {
 	        parent::__construct();
-	        $this->load->model('Testing_model');
-	        $this->module = 'testing';
+	        $this->load->model('Usama_model');
+	        $this->module = 'usama';
 	        $this->user_type = $this->session->userdata('user_type');
 	        $this->id = $this->session->userdata('user_id');
 	        $this->permission = $this->get_permission($this->module,$this->user_type);
@@ -15,23 +15,23 @@
 			{
 				redirect('home');
 			}
-			$this->data['title'] = 'Testing';
+			$this->data['title'] = 'Usama';
 			if ( $this->permission['view_all'] == '1'){
-				$this->data['testing'] = $this->Testing_model->all_rows('testing');
+				$this->data['usama'] = $this->Usama_model->all_rows('usama');
 			}
 			elseif ($this->permission['view'] == '1') {
-				$this->data['testing'] = $this->Testing_model->get_rows('testing',array('user_id'=>$this->id));
+				$this->data['usama'] = $this->Usama_model->get_rows('usama',array('user_id'=>$this->id));
 			}
 			$this->data['permission'] = $this->permission;
-			$this->load->template('testing/index',$this->data);
+			$this->load->template('usama/index',$this->data);
 		}public function create()
 		{
 			if ( $this->permission['created'] == '0') 
 			{
 				redirect('home');
 			}
-			$this->data['title'] = 'Create Testing';
-			$this->load->template('testing/create',$this->data);
+			$this->data['title'] = 'Create Usama';
+			$this->load->template('usama/create',$this->data);
 		}
 		public function insert()
 		{
@@ -41,9 +41,9 @@
 			}
 			$data = $this->input->post();
 			$data['user_id'] = $this->session->userdata('user_id');
-			$id = $this->Testing_model->insert('testing',$data);
+			$id = $this->Usama_model->insert('usama',$data);
 			if ($id) {
-				redirect('testing');
+				redirect('usama');
 			}
 		}public function edit($id)
 		{
@@ -51,9 +51,9 @@
 			{
 				redirect('home');
 			}
-			$this->data['title'] = 'Edit Testing';
-			$this->data['testing'] = $this->Testing_model->get_row_single('testing',array('id'=>$id));
-			$this->load->template('testing/edit',$this->data);
+			$this->data['title'] = 'Edit Usama';
+			$this->data['usama'] = $this->Usama_model->get_row_single('usama',array('id'=>$id));
+			$this->load->template('usama/edit',$this->data);
 		}
 
 		public function update()
@@ -65,9 +65,9 @@
 			$data = $this->input->post();
 			$id = $data['id'];
 			unset($data['id']);
-			$id = $this->Testing_model->update('testing',$data,array('id'=>$id));
+			$id = $this->Usama_model->update('usama',$data,array('id'=>$id));
 			if ($id) {
-				redirect('testing');
+				redirect('usama');
 			}
 		}public function delete($id)
 		{
@@ -75,6 +75,6 @@
 			{
 				redirect('home');
 			}
-			$this->Testing_model->delete('testing',array('id'=>$id));
-			redirect('testing');
+			$this->Usama_model->delete('usama',array('id'=>$id));
+			redirect('usama');
 		}}

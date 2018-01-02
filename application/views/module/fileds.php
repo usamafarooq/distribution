@@ -45,9 +45,9 @@
                                         <select class="form-control" name="type[]" required="">
                                             <option>Select Type</option>
                                             <option value="INT">INT</option>
-                                            <option value="INT">VARCHAR</option>
-                                            <option value="INT">TEXT</option>
-                                            <option value="INT">DATE</option>
+                                            <option value="VARCHAR">VARCHAR</option>
+                                            <option value="TEXT">TEXT</option>
+                                            <option value="DATE">DATE</option>
                                         </select>
                                     </div>
                                 </div>

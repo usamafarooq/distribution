@@ -1,11 +1,11 @@
 <?php
-		    class Testing extends MY_Controller{
+		    class Haider extends MY_Controller{
 
 		    	public function __construct()
 	    {
 	        parent::__construct();
-	        $this->load->model('Testing_model');
-	        $this->module = 'testing';
+	        $this->load->model('Haider_model');
+	        $this->module = 'haider';
 	        $this->user_type = $this->session->userdata('user_type');
 	        $this->id = $this->session->userdata('user_id');
 	        $this->permission = $this->get_permission($this->module,$this->user_type);
@@ -15,23 +15,23 @@
 			{
 				redirect('home');
 			}
-			$this->data['title'] = 'Testing';
+			$this->data['title'] = 'Haider';
 			if ( $this->permission['view_all'] == '1'){
-				$this->data['testing'] = $this->Testing_model->all_rows('testing');
+				$this->data['haider'] = $this->Haider_model->all_rows('haider');
 			}
 			elseif ($this->permission['view'] == '1') {
-				$this->data['testing'] = $this->Testing_model->get_rows('testing',array('user_id'=>$this->id));
+				$this->data['haider'] = $this->Haider_model->get_rows('haider',array('user_id'=>$this->id));
 			}
 			$this->data['permission'] = $this->permission;
-			$this->load->template('testing/index',$this->data);
+			$this->load->template('haider/index',$this->data);
 		}public function create()
 		{
 			if ( $this->permission['created'] == '0') 
 			{
 				redirect('home');
 			}
-			$this->data['title'] = 'Create Testing';
-			$this->load->template('testing/create',$this->data);
+			$this->data['title'] = 'Create Haider';
+			$this->load->template('haider/create',$this->data);
 		}
 		public function insert()
 		{
@@ -41,9 +41,9 @@
 			}
 			$data = $this->input->post();
 			$data['user_id'] = $this->session->userdata('user_id');
-			$id = $this->Testing_model->insert('testing',$data);
+			$id = $this->Haider_model->insert('haider',$data);
 			if ($id) {
-				redirect('testing');
+				redirect('haider');
 			}
 		}public function edit($id)
 		{
@@ -51,9 +51,9 @@
 			{
 				redirect('home');
 			}
-			$this->data['title'] = 'Edit Testing';
-			$this->data['testing'] = $this->Testing_model->get_row_single('testing',array('id'=>$id));
-			$this->load->template('testing/edit',$this->data);
+			$this->data['title'] = 'Edit Haider';
+			$this->data['haider'] = $this->Haider_model->get_row_single('haider',array('id'=>$id));
+			$this->load->template('haider/edit',$this->data);
 		}
 
 		public function update()
@@ -65,9 +65,9 @@
 			$data = $this->input->post();
 			$id = $data['id'];
 			unset($data['id']);
-			$id = $this->Testing_model->update('testing',$data,array('id'=>$id));
+			$id = $this->Haider_model->update('haider',$data,array('id'=>$id));
 			if ($id) {
-				redirect('testing');
+				redirect('haider');
 			}
 		}public function delete($id)
 		{
@@ -75,6 +75,6 @@
 			{
 				redirect('home');
 			}
-			$this->Testing_model->delete('testing',array('id'=>$id));
-			redirect('testing');
+			$this->Haider_model->delete('haider',array('id'=>$id));
+			redirect('haider');
 		}}

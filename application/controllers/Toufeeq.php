@@ -1,11 +1,11 @@
 <?php
-		    class Testing extends MY_Controller{
+		    class Toufeeq extends MY_Controller{
 
 		    	public function __construct()
 	    {
 	        parent::__construct();
-	        $this->load->model('Testing_model');
-	        $this->module = 'testing';
+	        $this->load->model('Toufeeq_model');
+	        $this->module = 'toufeeq';
 	        $this->user_type = $this->session->userdata('user_type');
 	        $this->id = $this->session->userdata('user_id');
 	        $this->permission = $this->get_permission($this->module,$this->user_type);
@@ -15,23 +15,23 @@
 			{
 				redirect('home');
 			}
-			$this->data['title'] = 'Testing';
+			$this->data['title'] = 'Toufeeq';
 			if ( $this->permission['view_all'] == '1'){
-				$this->data['testing'] = $this->Testing_model->all_rows('testing');
+				$this->data['toufeeq'] = $this->Toufeeq_model->all_rows('toufeeq');
 			}
 			elseif ($this->permission['view'] == '1') {
-				$this->data['testing'] = $this->Testing_model->get_rows('testing',array('user_id'=>$this->id));
+				$this->data['toufeeq'] = $this->Toufeeq_model->get_rows('toufeeq',array('user_id'=>$this->id));
 			}
 			$this->data['permission'] = $this->permission;
-			$this->load->template('testing/index',$this->data);
+			$this->load->template('toufeeq/index',$this->data);
 		}public function create()
 		{
 			if ( $this->permission['created'] == '0') 
 			{
 				redirect('home');
 			}
-			$this->data['title'] = 'Create Testing';
-			$this->load->template('testing/create',$this->data);
+			$this->data['title'] = 'Create Toufeeq';
+			$this->load->template('toufeeq/create',$this->data);
 		}
 		public function insert()
 		{
@@ -41,9 +41,9 @@
 			}
 			$data = $this->input->post();
 			$data['user_id'] = $this->session->userdata('user_id');
-			$id = $this->Testing_model->insert('testing',$data);
+			$id = $this->Toufeeq_model->insert('toufeeq',$data);
 			if ($id) {
-				redirect('testing');
+				redirect('toufeeq');
 			}
 		}public function edit($id)
 		{
@@ -51,9 +51,9 @@
 			{
 				redirect('home');
 			}
-			$this->data['title'] = 'Edit Testing';
-			$this->data['testing'] = $this->Testing_model->get_row_single('testing',array('id'=>$id));
-			$this->load->template('testing/edit',$this->data);
+			$this->data['title'] = 'Edit Toufeeq';
+			$this->data['toufeeq'] = $this->Toufeeq_model->get_row_single('toufeeq',array('id'=>$id));
+			$this->load->template('toufeeq/edit',$this->data);
 		}
 
 		public function update()
@@ -65,9 +65,9 @@
 			$data = $this->input->post();
 			$id = $data['id'];
 			unset($data['id']);
-			$id = $this->Testing_model->update('testing',$data,array('id'=>$id));
+			$id = $this->Toufeeq_model->update('toufeeq',$data,array('id'=>$id));
 			if ($id) {
-				redirect('testing');
+				redirect('toufeeq');
 			}
 		}public function delete($id)
 		{
@@ -75,6 +75,6 @@
 			{
 				redirect('home');
 			}
-			$this->Testing_model->delete('testing',array('id'=>$id));
-			redirect('testing');
+			$this->Toufeeq_model->delete('toufeeq',array('id'=>$id));
+			redirect('toufeeq');
 		}}
