@@ -3,6 +3,9 @@
 
 
 
+
+
+
             <div class="control-sidebar-bg"></div>
             <!-- Page Content -->
             <div id="page-wrapper">
@@ -66,8 +69,15 @@
                                             <tbody>
                                             <?php 
                                             $con = 0;
-                                            foreach($products_details as $products_detail){ 
+                                            foreach($product_data_sort as $products_detail){ 
                                                 $con++;
+
+
+
+
+$sale = explode(",",$products_detail['sale']);
+$month = explode(",",$products_detail['month']);
+echo '<pre>';print_r($month);
                                             ?>
                                                 <tr>
                                                     <td><?php echo $con ?></td>
@@ -76,7 +86,29 @@
                                         <td><?php echo $products_detail['product_name']; ?></td>
                                         <td><?php echo $products_detail['scm_product_code']; ?></td>
                                         <td><?php echo $products_detail['product_code']; ?></td>
-                                        <td></td>
+
+<?php
+for ($i = -3; $i <= -1; $i++){
+    $x = 0;
+    $month_key = date('m', strtotime("$i month"));
+    echo '<pre>';print_r($month_key);
+    $key = array_search($month_key, $month);
+    if (array_key_exists($key,$month)) {
+        $val = $month;
+    }
+    else{
+        $val = '0';
+    }
+    echo '<td>'.$val.'</td>';
+    $x++;
+}
+die;
+?>
+
+
+                                        
+
+
                                         <td></td>
                                         <td></td>
                                         <td></td>
