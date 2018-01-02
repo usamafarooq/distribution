@@ -30,9 +30,7 @@
                                 <div class="panel-heading">
                                     <div class="panel-title">
                                         <h4>View Product</h4>
-                                       
-
-
+                              
                                     </div>
                                 </div>
                                 <div class="panel-body">

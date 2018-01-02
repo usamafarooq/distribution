@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 01, 2018 at 11:37 AM
+-- Generation Time: Jan 02, 2018 at 07:38 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -44,8 +44,10 @@ CREATE TABLE `distribution` (
 --
 
 INSERT INTO `distribution` (`id`, `scm_code`, `scm_name`, `dsr_code`, `dsr_name`, `station`, `distribution_id`, `user_id`) VALUES
-(1, '000449', 'ABDULLAH MEDICOS - DADU', '0164', 'Abdullah Medicos', 'Dadu', 20, 2),
-(2, '000014', 'AHSAN TRADERS', '0042', 'Ahsan Traders', 'Rahim Yar Khan', 21, 2);
+(1, '000449', 'ABDULLAH MEDICOS - DADU', '164', 'Abdullah Medicos', 'Dadu', 20, 2),
+(2, '14', 'AHSAN TRADERS', '0042', 'Ahsan Traders', 'Rahim Yar Khan', 21, 2),
+(5, '900345', 'ABDULLAH MEDICOS - DADU', '1645454', 'Abdullah Medicos', 'Dadu', 26, 2),
+(6, '2320949', 'ABDULLAH MEDICOS - DADU', '16454111', 'Abdullah Medicos', 'Dadu', 27, 2);
 
 -- --------------------------------------------------------
 
@@ -140,7 +142,11 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `product_name`, `description`, `product_code`, `team`, `scm_product_code`, `tp_product`, `user_id`) VALUES
-(1, 'ACTIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 184850, 'abcde', 3, 1000, 2);
+(1, 'ACTIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 184850, 'abcde', 3, 1000, 2),
+(2, 'TCTIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 184001, 'abcde', 245, 16700, 2),
+(6, 'T3TIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 101841, 'arcde', 241, 1670, 2),
+(7, 'B3TIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 913, 'arcde', 242, 1670, 2),
+(8, 'FATTIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 1000841, 'arcde', 2438, 16900, 2);
 
 -- --------------------------------------------------------
 
@@ -219,7 +225,10 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
 (18, 'opp', 'opp@milya.com', 'e201220da86c13f4d9badaab658fa973', 14),
 (19, 'urrr', 'urrr@gmail.com', '549ce24fb62238d013a6e222cb4d41d8', 14),
 (20, 'DADU', 'DADU@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 14),
-(21, 'AHSAN', 'AHSAN@gmail.com', 'd6a9a933c8aafc51e55ac0662b6e4d4a', 14);
+(21, 'AHSAN', 'AHSAN@gmail.com', 'd6a9a933c8aafc51e55ac0662b6e4d4a', 14),
+(22, '21321', 'dasdas', 'd41d8cd98f00b204e9800998ecf8427e', 14),
+(26, 'xyzmg', 'xyzmg@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 14),
+(27, 'mojjojo1', 'mojjojo1@gmail.com', 'd41d8cd98f00b204e9800998ecf8427e', 14);
 
 -- --------------------------------------------------------
 
@@ -311,7 +320,7 @@ ALTER TABLE `user_type`
 -- AUTO_INCREMENT for table `distribution`
 --
 ALTER TABLE `distribution`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `modules`
 --
@@ -326,7 +335,7 @@ ALTER TABLE `permission`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `sales`
 --
@@ -341,7 +350,7 @@ ALTER TABLE `team`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT for table `user_type`
 --
