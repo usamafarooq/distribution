@@ -64,9 +64,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <div class="col-lg-2 delet pull-right">
+                                        <button type="button" class="add-sub btn btn-success ">Add More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="all-q row">
+                                <div class="form-group row">
                                     <label for="example-text-input" class="col-sm-3 col-form-label ">Relation<span class="required">*</span></label>
                                     <div class="col-sm-9">
-                                        <select class="form-control relation" name="relation_table[]" required="">
+                                        <select class="form-control relation" name="relation_table" required="">
                                             <option>Select Relation</option>
                                             <option value="yes">Yes</option>
                                             <option value="no">No</option>
@@ -74,7 +81,7 @@
                                     </div>
                                 </div>
                                 <div class="hide-div row" style="display: none;">
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-3">
                                         <label>Table</label><br>
                                         <select name="table[]" class="form-control table">
                                             <option>Select Table</option>
@@ -85,22 +92,28 @@
                                             ?>
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-3">
                                         <label>Relation Colume</label><br>
                                         <select name="relation[]" class="form-control relation_column">
                                             <option>Select Colume</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-4">
-                                        <label>Value Colume</label><br>
-                                        <select name="value[]" class="form-control value">
+                                    <div class="form-group col-md-3">
+                                        <label>Against</label><br>
+                                        <select name="against[]" class="form-control against_column">
                                             <option>Select Colume</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-lg-2 delet pull-right">
-                                        <button type="button" class="add-sub btn btn-success ">Add More</button>
+                                    <div class="form-group col-md-3">
+                                        <label>Value Colume</label><br>
+                                        <select name="value[0][]" multiple="" class="form-control value">
+                                            <option>Select Colume</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-2 delet pull-right">
+                                            <button type="button" class="add-relation btn btn-success ">Add More</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -147,10 +160,48 @@
             con++
         })
     });
+
+
+    $("body").on("click",".add-relation",function(){
+        var html = $(".hide-div").first().clone();
+        $(html).find(".delet").html("<a class='btn btn-danger remove-relation'><i class='fa fa-trash-o' aria-hidden='true'></i> </a> "+' <a class="btn btn-success add-sub"><strong> + </strong> </a>');
+        $(".hide-div").last().after(html);
+        $(".hide-div").last().find('input,select').not('input[type="checkbox"]').val('')
+        $(".hide-div").last().find('input[type="checkbox"]').removeAttr('checked')
+        var con = 0
+        $(".hide-div").each(function() {
+            $(this).find('.value').attr('name','value['+con+'][]')
+            con++
+        })
+        get_tables()
+
+        var against = $('.against_column').last()
+        against.empty();
+        against.append('<option>Select Colume</option>')
+        $('[name="name[]"]').each(function() {
+            against.append('<option value="'+$(this).val()+'">'+$(this).val()+'</option>')
+        })
+    });
+    $("body").on("click",".remove-relation",function(){
+        $(this).parents(".hide-div").remove();
+        var con = 0
+        $(".hide-div").each(function() {
+            $(this).find('.value').attr('name','value['+con+'][]')
+            con++
+        })
+    });
+
     function get_tables() {
         $('.relation').change(function() {
+            var th = $(this)
+            var against = $('.against_column').last()
             if($(this).val() == 'yes'){
                 $(this).parent().parent().parent().find('.hide-div').show()
+                against.empty();
+                against.append('<option>Select Colume</option>')
+                $('[name="name[]"]').each(function() {
+                    against.append('<option value="'+$(this).val()+'">'+$(this).val()+'</option>')
+                })
             }
             else{
                 $(this).parent().parent().parent().find('.hide-div').hide()
