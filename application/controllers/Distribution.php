@@ -177,29 +177,23 @@ class Distribution extends MY_Controller {
 				$handle = fopen($_FILES['csv_name']['tmp_name'], "r");
 				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 
-// echo '<pre>';print_r($data);die;
-
 					if (!empty($data[0])) {
 						$username = $this->Distribution_model->get_row_single('users',array('name'=>$data[0]));
 						if (empty($username)) {
 							$email = $this->Distribution_model->get_row_single('users',array('email'=>$data[1]));
 							$user_type_id = $this->Distribution_model->get_row_single('user_type',array('name'=>'Distribution'));
 							if (empty($email)){
-
-$query = 'SELECT * FROM `distribution` WHERE LTRIM(`scm_code`) = '.$data[2];
-$scm_code_ckeck = $this->Distribution_model->query_single_result($query);
-
-// $x = $this->db->last_query();
-// print_r($x);die;
-
-								if (empty($scm_code_ckeck)){
-
-$query_dsr = 'SELECT * FROM `distribution` WHERE LTRIM(`dsr_code`) = '.$data[4];
-$dsr_code_ckeck = $this->Distribution_model->query_single_result($query_dsr);
-									if (empty($dsr_code_ckeck)){
-
+				$data_value = $data[2];
+				$column = 'scm_code';
+				$table_data = 'distribution';								
+				$scm_code_ckeck = $this->Distribution_model->view_scm_code_ckeck($column,$data_value,$table_data);
+				if (empty($scm_code_ckeck)){
+				$data_value = $data[4];
+				$column = 'dsr_code';
+				$table_data = 'distribution';
+				$dsr_code_ckeck = $this->Distribution_model->view_scm_code_ckeck($column,$data_value,$table_data);	
+								if (empty($dsr_code_ckeck)){
 								$products_insert[] = array(
-
 									'user_id' => $this->session->userdata('user_id'),
 									'name' => $data[0],
 									'email' => $data[1],
@@ -211,9 +205,6 @@ $dsr_code_ckeck = $this->Distribution_model->query_single_result($query_dsr);
 									'role' => $user_type_id['id'],
 									'password' => md5($data[7]),
 								);
-
-// echo '<pre>';print_r($products_insert);die;
-
 
 								$insert_user = $this->Distribution_model->insert('users',array('name' => $data[0],'email' => $data[1],'password' => md5($data[7]),'role' => $user_type_id['id']));
 								$insert_distributor = $this->Distribution_model->insert('distribution',array('scm_code' => $data[2],'scm_name' => $data[3],'dsr_code' => $data[4],'dsr_name' => $data[5],'station' => $data[6],'user_id' =>  $this->session->userdata('user_id'),'distribution_id'=> $insert_user ));
