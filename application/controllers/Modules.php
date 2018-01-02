@@ -54,12 +54,19 @@ class Modules extends MY_Controller {
 		}
 	}
 
+	public function get_colume($table)
+	{
+		$result = $this->Modules_model->query('SHOW COLUMNS FROM '.$table)->result_array();
+		echo json_encode($result);
+	}
+
 	public function fileds($id)
 	{
 		if ( $this->permission['created'] == '0') 
 		{
 			redirect('home');
 		}
+		$this->data['tables'] = $this->db->list_tables();
 		$this->data['id'] = $id;
 		$this->data['title'] = 'Create Fileds';
 		$this->load->template('module/fileds',$this->data);
