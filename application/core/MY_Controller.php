@@ -57,10 +57,10 @@ class MY_Controller extends CI_Controller {
 							 ->from('".$tablename."')";
 					foreach ($fileds as $f) {
 						if ($f['is_relation'] == 1) {
-							$contents .= "->join('".$f['relation_table']."', '".$f['relation_table'].".".$f['relation_column']." = ".$tablename.".".$f['name']."');";
+							$contents .= "->join('".$f['relation_table']."', '".$f['relation_table'].".".$f['relation_column']." = ".$tablename.".".$f['name']."')";
 						}
 					}
-					$contents .= "if (%id != null) {
+					$contents .= "; if (%id != null) {
 							%this->db->where('".$tablename.".user_id', %id);
 						}";
 					$contents .= "return %this->db->get()->result_array();
@@ -152,7 +152,7 @@ class MY_Controller extends CI_Controller {
 			%this->data['title'] = 'Create ".ucfirst($controller_name)."';";
 			foreach ($fileds as $f) {
 				if ($f['is_relation'] == 1) {
-					$contents .= "%this->data['".$f['relation_table']."'] = %this->User_model->all_rows('".$f['relation_table']."');";
+					$contents .= "%this->data['table_".$f['relation_table']."'] = %this->".ucfirst($module_name)."->all_rows('".$f['relation_table']."');";
 				}
 			}
 			$contents .= "%this->load->template('".$controller_name."/create',%this->data);
@@ -185,7 +185,7 @@ class MY_Controller extends CI_Controller {
 			%this->data['".$controller_name."'] = %this->".ucfirst($module_name)."->get_row_single('".$tablename."',array('id'=>%id));";
 			foreach ($fileds as $f) {
 				if ($f['is_relation'] == 1) {
-					$contents .= "%this->data['".$f['relation_table']."'] = %this->User_model->all_rows('".$f['relation_table']."');";
+					$contents .= "%this->data['table_".$f['relation_table']."'] = %this->".ucfirst($module_name)."->all_rows('".$f['relation_table']."');";
 				}
 			}
 			$contents .= "%this->load->template('".$controller_name."/edit',%this->data);
