@@ -74,7 +74,6 @@ class Modules extends MY_Controller {
 
 	public function fields_insert()
 	{
-		//print_r($_POST['value']);die;
 		$id = $this->input->post('module_id');
 		$module = $this->Modules_model->get_row_single('modules',array('id'=>$id));
 		$tablename = $module['main_name'];
@@ -83,14 +82,11 @@ class Modules extends MY_Controller {
 		$type = $this->input->post('type');
 		$length = $this->input->post('length');
 		$required = $this->input->post('required');
-
-		// relation columns
 		$relation = $this->input->post('relation_table');
 		$table = $this->input->post('table');
 		$relation_column = $this->input->post('relation');
 		$against_column = $this->input->post('against');
 		$value_column = $this->input->post('value');
-
 		for ($i=0; $i < sizeof($name); $i++) {
 			if ($relation == 'yes') {
 			 	$key = array_search($name[$i], $against_column);
@@ -141,13 +137,6 @@ class Modules extends MY_Controller {
 		$this->create_main_view($url,$url.'_model',$tablename,$fileds);
 		$this->create_create_view($url,$url.'_model',$tablename,$fileds);
 		$this->create_edit_view($url,$url.'_model',$tablename,$fileds);
-
-		//$this->create_module($url.'_model');
-		//$this->create_controller($url,$url.'_model',$tablename);
-		//$this->create_folder($url);
-		//$this->create_main_view($url,$url.'_model',$tablename,$fileds);
-		//$this->create_create_view($url,$url.'_model',$tablename,$fileds);
-		//$this->create_edit_view($url,$url.'_model',$tablename,$fileds);
 		redirect('modules');
 	}
 
