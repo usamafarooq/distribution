@@ -69,14 +69,26 @@ class Orders extends MY_Controller {
 
 
 		$this->data['product_data_sort'] = $this->db->query("SELECT product.*, group_concat(s.sale separator ',') as sale, group_concat(s.month separator
-		',') as month FROM product left join (select sales.packcode, sum(sales.sales) as sale, MONTH(sales.date) as month from sales where sales.distribution_code = ".$scm_code." and sales.date >= DATE('".$first_date."') and sales.date <= DATE('".$last_date."') GROUP BY MONTH(sales.date)) as s on s.packcode = product.product_code GROUP by product.id")->result_array();
+		',') as month, c.closing FROM product left join (select sales.packcode, sum(sales.sales) as sale, MONTH(sales.date) as month, sales.closing from sales where sales.distribution_code = ".$scm_code." and sales.date >= DATE('".$first_date."') and sales.date <= DATE('".$last_date."') GROUP BY MONTH(sales.date)) as s on s.packcode = product.product_code left join (select closing, packcode from sales where distribution_code = ".$scm_code." order by id desc limit 1) as c on c.packcode = product.product_code GROUP by product.id")->result_array();
 		// echo '<pre>';print_r($result);die;
 
-
+		
 
 		}
 		elseif ($this->pro_permission['view'] == '1') {
 			$this->data['products_details'] = $this->Orders_model->get_rows('product',array('user_id'=>$this->id));
+
+
+		$first_date  =  date('Y-m-01', strtotime("-3 month"));
+ 		$last_date  =  date('Y-m-t', strtotime("-1 month"));
+
+
+			$this->data['product_data_sort'] = $this->db->query("SELECT product.*, group_concat(s.sale separator ',') as sale, group_concat(s.month separator
+		',') as month, c.closing FROM product left join (select sales.packcode, sum(sales.sales) as sale, MONTH(sales.date) as month, sales.closing from sales where sales.distribution_code = ".$scm_code." and sales.date >= DATE('".$first_date."') and sales.date <= DATE('".$last_date."') and sales.user_id = ".$this->id." GROUP BY MONTH(sales.date)) as s on s.packcode = product.product_code left join (select closing, packcode from sales where distribution_code = ".$scm_code." and sales.user_id = ".$this->id." order by id desc limit 1) as c on c.packcode = product.product_code where product.user_id = ".$this->id." GROUP by product.id  ")->result_array();
+
+
+
+
 		}
 		$this->data['permission'] = $this->permission;
 		$this->data['title'] = 'Create Order';
