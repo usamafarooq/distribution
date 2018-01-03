@@ -58,12 +58,29 @@ foreach ($fileds as $f) {
                                 elseif ($f['type'] == 'DATE') {
                                     $type = 'date';
                                 }
-                                $contents .='</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" name="'.$f['name'].'" type="'.$type.'" value="<?php  echo %'.$controller_name.'["'.$f['name'].'"] ?>" id="example-text-input" placeholder="" '.$req.'>
-                                </div>
+                                if ($f['is_relation'] == 1) {
+                                    $contents .='</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="'.$f['name'].'" '.$req.'>
+                                                <option>Select '.str_replace("_"," ",ucfirst($f['name'])).'</option>';
+                                                $column = explode(',', $f['value_column']);
+                                                $contents .='<?php foreach ($table_'.$f["relation_table"].' as $t) {?>
+                                                    <option value="<?php echo $t["'.$f['relation_column'].'"] ?>" <?php if($t["'.$f['relation_column'].'"] == %'.$controller_name.'["'.$f['name'].'"]) echo "selected" ?>><?php echo $t["'.$column[0].'"] ?></option>
+                                               <?php } ?>';
+                                            $contents .='</select>
+                                        </div>
 
-                            </div>';
+                                    </div>';
+                                }
+                                else{
+                                    $contents .='</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" name="'.$f['name'].'" type="'.$type.'" value="<?php echo %'.$controller_name.'["'.$f['name'].'"] ?>" id="example-text-input" placeholder="" '.$req.'>
+                                        </div>
+
+                                    </div>';
+                                }
+                                
 }         
                             $contents .= '<div class="form-group row">
 

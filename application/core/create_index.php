@@ -42,7 +42,15 @@ $contents = '		<!-- /.Navbar  Static Side -->
 												<tr>
 													<th>Id</th>';
 foreach ($fileds as $f) {
-	$contents .= '<th>'.str_replace("_"," ",ucfirst($f['name'])).'</th>';
+	if ($f['is_relation'] == 1) {
+		$column = explode(',', $f['value_column']);
+		for ($i=0; $i < sizeof($column); $i++) { 
+			$contents .= '<th>'.str_replace("_"," ",ucfirst($column[$i])).'</th>';
+		}
+	}
+	else{
+		$contents .= '<th>'.str_replace("_"," ",ucfirst($f['name'])).'</th>';
+	}
 }
 													
 													$contents .= '<?php 
@@ -59,7 +67,15 @@ foreach ($fileds as $f) {
 												<tr>
 													<td><?php echo %module["id"] ?></td>';
 foreach ($fileds as $f) {
-	$contents .= '<td><?php echo %module["'.$f['name'].'"] ?></td>';
+	if ($f['is_relation'] == 1) {
+		$column = explode(',', $f['value_column']);
+		for ($i=0; $i < sizeof($column); $i++) { 
+			$contents .= '<td><?php echo %module["'.$column[$i].'"] ?></td>';
+		}
+	}
+	else{
+		$contents .= '<td><?php echo %module["'.$f['name'].'"] ?></td>';
+	}
 }													
 													$contents .= '<?php 
 														if (%permission["edit"] == "1" || %permission["deleted"] == "1"){
