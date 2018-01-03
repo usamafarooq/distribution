@@ -119,16 +119,16 @@ class Product extends MY_Controller {
 				$handle = fopen($_FILES['csv_name']['tmp_name'], "r");
 				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 					if (!empty($data[0])) {
-				$data_value = $data[2];
-				$column = 'product_code';
-				$table_data = 'product';
-				$product_code_ckeck = $this->Product_model->view_scm_code_ckeck($column,$data_value,$table_data);	
-				if (empty($product_code_ckeck)) {
-				$data_value = $data[4];
-				$column = 'scm_product_code';
-				$table_data = 'product';
-				$scm_product_code = $this->Product_model->view_scm_code_ckeck($column,$data_value,$table_data);
-				if (empty($scm_product_code)) {
+						$data_value = $data[2];
+						$column = 'product_code';
+						$table_data = 'product';
+						$product_code_ckeck = $this->Product_model->view_scm_code_ckeck($column,$data_value,$table_data);	
+						if (empty($product_code_ckeck)) {
+						$data_value = $data[4];
+						$column = 'scm_product_code';
+						$table_data = 'product';
+						$scm_product_code = $this->Product_model->view_scm_code_ckeck($column,$data_value,$table_data);
+						if (empty($scm_product_code)) {
 						$products_insert[] = array(
 							'user_id' => $this->session->userdata('user_id'),
 							'product_name' => $data[0],
@@ -139,20 +139,19 @@ class Product extends MY_Controller {
 							'tp_product' => $data[5],
 								);
 						$data_response = $this->Product_model->insert_batch('product',$products_insert);
-							}
+								}
+								else
+								{
+									redirect('product');
+								}
+						}
 							else
 							{
 								redirect('product');
 							}
-						}
-						else
-						{
-							redirect('product');
-						}
 					}
 				}
 				fclose($handle);
-				
 				if ($data_response) {
 				redirect('product');
 				}

@@ -59,8 +59,21 @@ class Orders extends MY_Controller {
 		}
 		$scm_code = $this->input->post('distribution_sort');
 		$this->data['distribution'] = $this->Orders_model->get_row_single('distribution',array('scm_code'=>$scm_code));
+
+		// echo '<pre>';print_r($scm_code);die;
+
 		if ( $this->pro_permission['view_all'] == '1'){
 			$this->data['products_details'] = $this->Orders_model->all_rows('product');
+ 		$first_date  =  date('Y-m-01', strtotime("-3 month"));
+ 		$last_date  =  date('Y-m-t', strtotime("-1 month"));
+
+
+		$this->data['product_data_sort'] = $this->db->query("SELECT product.*, group_concat(s.sale separator ',') as sale, group_concat(s.month separator
+		',') as month FROM product left join (select sales.packcode, sum(sales.sales) as sale, MONTH(sales.date) as month from sales where sales.distribution_code = ".$scm_code." and sales.date >= DATE('".$first_date."') and sales.date <= DATE('".$last_date."') GROUP BY MONTH(sales.date)) as s on s.packcode = product.product_code GROUP by product.id")->result_array();
+		// echo '<pre>';print_r($result);die;
+
+
+
 		}
 		elseif ($this->pro_permission['view'] == '1') {
 			$this->data['products_details'] = $this->Orders_model->get_rows('product',array('user_id'=>$this->id));
@@ -68,6 +81,13 @@ class Orders extends MY_Controller {
 		$this->data['permission'] = $this->permission;
 		$this->data['title'] = 'Create Order';
 		$this->load->template('orders/create',$this->data);
+	}
+
+	public function test()
+	{
+		$result = $this->db->query("SELECT product.*, group_concat(s.sale separator ',') as sale, group_concat(s.month separator
+		 ',') as month FROM product left join (select sales.packcode, sum(sales.sales) as sale, MONTH(sales.date) as month from sales where sales.distribution_code = 000449 and sales.date >= DATE('2017-10-01') and sales.date <= DATE('2017-12-31') GROUP BY MONTH(sales.date)) as s on s.packcode = product.product_code GROUP by product.id")->result_array();
+		echo '<pre>';print_r($result);die;
 	}
 
 }
