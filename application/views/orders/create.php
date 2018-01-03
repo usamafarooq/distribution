@@ -77,7 +77,7 @@
 
 $sale = explode(",",$products_detail['sale']);
 $month = explode(",",$products_detail['month']);
-echo '<pre>';print_r($month);
+
                                             ?>
                                                 <tr>
                                                     <td><?php echo $con ?></td>
@@ -88,38 +88,45 @@ echo '<pre>';print_r($month);
                                         <td><?php echo $products_detail['product_code']; ?></td>
 
 <?php
+$avg_sum = 0;
 for ($i = -3; $i <= -1; $i++){
-    $x = 0;
+
     $month_key = date('m', strtotime("$i month"));
-    echo '<pre>';print_r($month_key);
     $key = array_search($month_key, $month);
-    if (array_key_exists($key,$month)) {
-        $val = $month;
+    if ($key <= -1) {
+        $val = '0';
+
     }
     else{
-        $val = '0';
+        if (array_key_exists($key,$month)) {
+            $val = $sale[$key];
+            $avg_sum+= $val;
+        }
+        else{
+            $val = '0';
+
+        }
     }
     echo '<td>'.$val.'</td>';
-    $x++;
+    
 }
-die;
 ?>
 
-
-                                        
-
-
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td><?php 
+                                         $avg_sum = $avg_sum/3;
+                                         echo $res_avg = round($avg_sum);
+                                          ?></td>
+                                        <td><?php echo $instransit = 0; ?></td>
+                                        <td><?php echo $products_detail['closing']; ?></td>
+                                        <td><?php echo $closing_stock = $products_detail['closing'] + $instransit; ?></td>
+                                        <td><?php 
+                                        $res = ($avg_sum * 2.5) - $closing_stock ; 
+                                        echo round($res);
+                                        ?></td>
+                <td><input type="number" name="order_field0<?php echo $products_detail['id']; ?>" id="order1" class="order1"></td>
+                <td><input type="number" name="order_data1<?php echo $products_detail['id']; ?>" id="order2" class="order1"></td>
+                <td><input type="number" name="order_store3<?php echo $products_detail['id']; ?>" id="order3" class="order1"></td>
+                                        <td><span class="order_quantity"></span></td>
                                         <td></td>
                                         <td></td>
                                                 </tr>
@@ -176,3 +183,24 @@ $('#csv_check').change(function() {
     });
 
 </script>
+
+<script>
+    
+
+$(document).on("change", ".order1", function() {
+    var sum = 0;
+    $(".order1").each(function(){
+    sum += +$(this).val();
+    console.log(sum);
+    $(".order_quantity").html(sum);
+});
+
+
+
+});
+
+
+
+</script>
+
+
