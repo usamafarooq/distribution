@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 02, 2018 at 07:38 AM
+-- Generation Time: Jan 08, 2018 at 07:16 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -83,6 +83,48 @@ INSERT INTO `modules` (`id`, `name`, `main_name`, `sort`, `icon`, `url`, `user_i
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `modules_fileds`
+--
+
+CREATE TABLE `modules_fileds` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `length` int(11) NOT NULL,
+  `required` int(11) NOT NULL DEFAULT '0',
+  `module_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `distribution_code` varchar(100) NOT NULL,
+  `pak_code` varchar(100) NOT NULL,
+  `order_field` int(50) NOT NULL,
+  `order_field2` int(50) NOT NULL,
+  `order_field3` int(50) NOT NULL,
+  `growth` int(50) NOT NULL,
+  `carton` int(50) NOT NULL,
+  `date` varchar(100) NOT NULL,
+  `user_id` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `distribution_code`, `pak_code`, `order_field`, `order_field2`, `order_field3`, `growth`, `carton`, `date`, `user_id`) VALUES
+(1, '14', '184850', 4, 4, 4, 4, 3, '2018-01-04', 2),
+(2, '14', '184850', 5, 5, 5, 3, 50, '2017-12-04', 2);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `permission`
 --
 
@@ -110,15 +152,15 @@ INSERT INTO `permission` (`id`, `module_id`, `user_id`, `user_type_id`, `view`, 
 (35, 2, 2, 14, 1, 0, 0, 0, 0, 0),
 (36, 3, 2, 14, 0, 0, 0, 0, 0, 0),
 (37, 5, 2, 14, 0, 0, 0, 0, 0, 0),
-(121, 2, 2, 1, 1, 1, 1, 1, 1, 1),
-(122, 3, 2, 1, 1, 1, 1, 1, 1, 1),
-(123, 5, 2, 1, 1, 1, 1, 1, 1, 1),
-(124, 7, 2, 1, 1, 1, 1, 1, 1, 1),
-(125, 9, 2, 1, 1, 1, 1, 1, 1, 1),
-(126, 10, 2, 1, 1, 1, 1, 1, 1, 1),
-(127, 11, 2, 1, 1, 1, 1, 1, 1, 1),
-(128, 12, 2, 1, 1, 1, 1, 1, 1, 1),
-(129, 13, 2, 1, 1, 1, 1, 1, 1, 1);
+(148, 2, 2, 1, 1, 1, 1, 1, 1, 1),
+(149, 3, 2, 1, 1, 1, 1, 1, 1, 1),
+(150, 5, 2, 1, 1, 1, 1, 1, 1, 1),
+(151, 7, 2, 1, 1, 1, 1, 1, 1, 1),
+(152, 9, 2, 1, 1, 1, 1, 1, 1, 1),
+(153, 10, 2, 1, 1, 1, 1, 1, 1, 1),
+(154, 11, 2, 1, 1, 1, 1, 1, 1, 1),
+(155, 12, 2, 1, 1, 1, 1, 1, 1, 1),
+(156, 13, 2, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -146,7 +188,9 @@ INSERT INTO `product` (`id`, `product_name`, `description`, `product_code`, `tea
 (2, 'TCTIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 184001, 'abcde', 245, 16700, 2),
 (6, 'T3TIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 101841, 'arcde', 241, 1670, 2),
 (7, 'B3TIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 913, 'arcde', 242, 1670, 2),
-(8, 'FATTIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 1000841, 'arcde', 2438, 16900, 2);
+(8, 'FATTIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 1000841, 'arcde', 2438, 16900, 2),
+(10, 'ZATTIIFLORA', 'POWD. SACHE 0010G  0250MG X 10', 9040847, 'arcde', 211145, 36411, 2),
+(11, 'PondsCream', 'POWD. SACHE 0010G  0250MG X 10', 90991, 'arcde', 215545, 6766, 2);
 
 -- --------------------------------------------------------
 
@@ -169,7 +213,9 @@ CREATE TABLE `sales` (
 --
 
 INSERT INTO `sales` (`id`, `distribution_code`, `packcode`, `date`, `sales`, `closing`, `user_id`) VALUES
-(10, '000449', '184850', '2017-12-31', '4343', 3434, 2);
+(10, '14', '184850', '2017-12-31', '4343', 3434, 2),
+(11, '14', '184850', '2017-12-26', '4343', 3414, 2),
+(12, '14', '184850', '2017-11-26', '4343', 3414, 2);
 
 -- --------------------------------------------------------
 
@@ -271,6 +317,12 @@ ALTER TABLE `modules`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `permission`
 --
 ALTER TABLE `permission`
@@ -320,27 +372,32 @@ ALTER TABLE `user_type`
 -- AUTO_INCREMENT for table `distribution`
 --
 ALTER TABLE `distribution`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `modules`
 --
 ALTER TABLE `modules`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `permission`
 --
 ALTER TABLE `permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `team`
 --
@@ -350,7 +407,7 @@ ALTER TABLE `team`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `user_type`
 --

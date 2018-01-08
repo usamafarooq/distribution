@@ -26,7 +26,11 @@
                                 <div class="panel-heading">
                                     <div class="panel-title">
                                         <h4>View Order</h4>
-                              
+                                        
+                                        <a href="<?php echo base_url('orders/add') ?>"><button class="btn btn-info pull-right">Add</button></a>
+                                         
+
+
                                     </div>
                                 </div>
         <form action="<?php echo base_url(); ?>orders/submit_data_order" method="post">
