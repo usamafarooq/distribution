@@ -24,12 +24,16 @@ class Orders extends MY_Controller {
 		}
 		$this->data['title'] = 'Order';
 		if ( $this->permission['view_all'] == '1'){
-			$this->data['orders'] = $this->Orders_model->all_rows('sales');
+			
+		$this->data['index_data'] = $this->Orders_model->order_index();
+
+
 		}
 		elseif ($this->permission['view'] == '1') {
 			$this->data['orders'] = $this->Orders_model->get_rows('sales',array('user_id'=>$this->id));
 		}
 		$this->data['permission'] = $this->permission;
+		// print_r($this->data['index_data']);die;
 		$this->load->template('orders/index',$this->data);
     }
 
@@ -95,11 +99,86 @@ class Orders extends MY_Controller {
 		$this->load->template('orders/create',$this->data);
 	}
 
+
+
+
+
+		public function submit_data_order()
+	{
+		
+		$product_data = [];
+
+		$data = $this->input->post();
+		$data_size = sizeof($data['distribution_code_order']);
+		$data_size = $data_size - 1;
+		for ($x = 0; $x <= $data_size; $x++) {
+		
+			// if(empty($data['order_field'][$x])){
+			// 	unset($data['order_field'][$x]);
+			// }
+			// if(empty($data['order_field2'][$x])){
+			// 	unset($data['order_field2'][$x]);
+			// }
+			// if(empty($data['order_field3'][$x])){
+			// 	unset($data['order_field3'][$x]);
+			// }
+			// if(empty($data['growth'][$x])){
+			// 	unset($data['growth'][$x]);
+			// }
+			// if(empty($data['carton'][$x])){
+			// 	unset($data['carton'][$x]);
+			// }
+
+
+
+			if( !empty($data['order_field'][$x] ))
+			{
+
+
+				$product_data[] = array(
+
+				'distribution_code' =>$data['distribution_code_order'][$x],
+				'pak_code'=>$data['scm_product_order'][$x],
+				'order_field'=>$data['order_field'][$x],
+				'order_field2'=>$data['order_field2'][$x],
+				'order_field3'=>$data['order_field3'][$x],
+				'growth'=>$data['growth'][$x],
+				'carton'=>$data['carton'][$x],
+				'date'=>date("Y-m-d"),
+				'user_id'=>$this->id,
+
+				);
+
+
+
+			}
+
+			
+		}
+
+		$data_inserted = $this->Orders_model->insert_batch('orders',$product_data);
+		redirect('home');
+		
+
+	}
+
+
+
+
+
+
+
 	public function test()
 	{
-		$result = $this->db->query("SELECT product.*, group_concat(s.sale separator ',') as sale, group_concat(s.month separator
-		 ',') as month FROM product left join (select sales.packcode, sum(sales.sales) as sale, MONTH(sales.date) as month from sales where sales.distribution_code = 000449 and sales.date >= DATE('2017-10-01') and sales.date <= DATE('2017-12-31') GROUP BY MONTH(sales.date)) as s on s.packcode = product.product_code GROUP by product.id")->result_array();
-		echo '<pre>';print_r($result);die;
+		// $result = $this->db->query("SELECT product.*, group_concat(s.sale separator ',') as sale, group_concat(s.month separator
+		//  ',') as month FROM product left join (select sales.packcode, sum(sales.sales) as sale, MONTH(sales.date) as month from sales where sales.distribution_code = 000449 and sales.date >= DATE('2017-10-01') and sales.date <= DATE('2017-12-31') GROUP BY MONTH(sales.date)) as s on s.packcode = product.product_code GROUP by product.id")->result_array();
+		// echo '<pre>';print_r($result);die;
+
+
+		
+		
+
+
 	}
 
 }
