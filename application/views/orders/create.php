@@ -36,9 +36,12 @@
                               
                                     </div>
                                 </div>
+        <form action="<?php echo base_url(); ?>orders/submit_data_order" method="post">
                                 <div class="panel-body">
                                     
                                     <div class="table-responsive">
+
+  
                                         <table id="dataTableExample2" class="table table-bordered table-striped table-hover">
                                             <thead>
                                                 <tr>
@@ -66,7 +69,7 @@
                                                     <th>Packs Carton</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody>                                          
                                             <?php 
                                             $con = 0;
                                             foreach($product_data_sort as $products_detail){ 
@@ -79,6 +82,9 @@ $sale = explode(",",$products_detail['sale']);
 $month = explode(",",$products_detail['month']);
 
                                             ?>
+
+
+                                           
                                                 <tr>
                                                     <td><?php echo $con ?></td>
                                                     <td><?php echo $distribution['scm_code']; ?></td>
@@ -86,6 +92,10 @@ $month = explode(",",$products_detail['month']);
                                         <td><?php echo $products_detail['product_name']; ?></td>
                                         <td><?php echo $products_detail['scm_product_code']; ?></td>
                                         <td><?php echo $products_detail['product_code']; ?></td>
+
+<input type="hidden" name="distribution_code_order[]" value="<?php echo $distribution['scm_code']; ?>">    
+<input type="hidden" name="scm_product_order[]" value="<?php echo $products_detail['product_code']; ?>">     
+
 
 <?php
 $avg_sum = 0;
@@ -123,21 +133,31 @@ for ($i = -3; $i <= -1; $i++){
                                         $res = ($avg_sum * 2.5) - $closing_stock ; 
                                         echo round($res);
                                         ?></td>
-                <td><input type="number" name="order_field0<?php echo $products_detail['id']; ?>" id="order1" class="order1"></td>
-                <td><input type="number" name="order_data1<?php echo $products_detail['id']; ?>" id="order2" class="order1"></td>
-                <td><input type="number" name="order_store3<?php echo $products_detail['id']; ?>" id="order3" class="order1"></td>
+                <td><input type="number" name="order_field[]" id="order1" class="order1"></td>
+                <td><input type="number" name="order_field2[]" id="order2" class="order1"></td>
+                <td><input type="number" name="order_field3[]" id="order3" class="order1"></td>
                                         <td><span class="order_quantity"></span></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td><input type="text" name="growth[]"></td>
+                                        <td><input type="text" name="carton[]"></td>
                                                 </tr>
+
+
+
                                             <?php } ?>
+
 
                                             </tbody>
                                         </table>
-                                        
+
                                     </div>
                                 </div>
+
                             </div>
+
+                        
+
+<input type="submit" name="">
+</form>
                         </div>
                     </div>
                     <div style="height: 450px;"></div>
@@ -173,7 +193,8 @@ for ($i = -3; $i <= -1; $i++){
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
-<script>    
+<script>  
+
 $('.csvbtn').attr('disabled',true);
 $('#csv_check').change(function() {
       if($(this).val()) {
@@ -185,21 +206,17 @@ $('#csv_check').change(function() {
 </script>
 
 <script>
-    
 
 $(document).on("change", ".order1", function() {
     var sum = 0;
-    $(".order1").each(function(){
+    var th = $(this)
+    th.parent().parent().find(".order1").each(function(){
     sum += +$(this).val();
     console.log(sum);
-    $(".order_quantity").html(sum);
+    th.parent().parent().find(".order_quantity").html(sum);
 });
 
-
-
 });
-
-
 
 </script>
 
