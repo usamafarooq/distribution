@@ -27,14 +27,18 @@ class Orders extends MY_Controller {
 			
 		$this->data['index_data'] = $this->Orders_model->order_index();
 
-
 		}
 		elseif ($this->permission['view'] == '1') {
-			$this->data['orders'] = $this->Orders_model->get_rows('sales',array('user_id'=>$this->id));
+			$this->data['index_data'] = $this->Orders_model->order_index_single($this->id);
+
 		}
 		$this->data['permission'] = $this->permission;
 		// print_r($this->data['index_data']);die;
 		$this->load->template('orders/index',$this->data);
+
+
+
+		
     }
 
     public function Add()
@@ -73,8 +77,7 @@ class Orders extends MY_Controller {
 
  		// echo '<pre>';print_r($last_date);die;
 
-		$this->data['product_data_sort'] = $this->db->query("SELECT product.*, group_concat(s.sale separator ',') as sale, group_concat(s.month separator
-		',') as month, c.closing FROM product left join (select sales.packcode, sum(sales.sales) as sale, MONTH(sales.date) as month, sales.closing from sales where sales.distribution_code = '".$scm_code."' and sales.date >= DATE('".$first_date."') and sales.date <= DATE('".$last_date."') GROUP BY MONTH(sales.date)) as s on s.packcode = product.product_code left join (select closing, packcode from sales where distribution_code = '".$scm_code."' order by id desc limit 1) as c on c.packcode = product.product_code GROUP by product.id")->result_array();
+		$this->data['product_data_sort'] = $this->Orders_model->index_data($scm_code,$first_date,$last_date);
 
 		// echo '<pre>';print_r($this->data['product_data_sort']);die;
 
@@ -82,17 +85,15 @@ class Orders extends MY_Controller {
 
 		}
 		elseif ($this->pro_permission['view'] == '1') {
-			$this->data['products_details'] = $this->Orders_model->get_rows('product',array('user_id'=>$this->id));
 
 
-		$first_date  =  date('Y-m-01', strtotime("-3 month"));
+$first_date  =  date('Y-m-01', strtotime("-3 month"));
  		$last_date  =  date('Y-m-t', strtotime("-1 month"));
 
 
-			$this->data['product_data_sort'] = $this->db->query("SELECT product.*, group_concat(s.sale separator ',') as sale, group_concat(s.month separator
-		',') as month, c.closing FROM product left join (select sales.packcode, sum(sales.sales) as sale, MONTH(sales.date) as month, sales.closing from sales where sales.distribution_code = ".$scm_code." and sales.date >= DATE('".$first_date."') and sales.date <= DATE('".$last_date."') and sales.user_id = ".$this->id." GROUP BY MONTH(sales.date)) as s on s.packcode = product.product_code left join (select closing, packcode from sales where distribution_code = ".$scm_code." and sales.user_id = ".$this->id." order by id desc limit 1) as c on c.packcode = product.product_code where product.user_id = ".$this->id." GROUP by product.id  ")->result_array();
+	$this->data['product_data_sort'] = $this->Orders_model->index_data_single($this->id,$scm_code,$first_date,$last_date);
 
-
+	// print_r($this->data['product_data_sort']);die;
 
 
 		}
@@ -101,6 +102,56 @@ class Orders extends MY_Controller {
 		$this->load->template('orders/create',$this->data);
 	}
 
+
+	public function edit($id)
+	{
+		
+		if ($this->permission['edit'] == '0') 
+		{
+			redirect('home');
+		}
+
+		$this->data['title'] = 'Edit Products';
+		$this->data['team'] = $this->Orders_model->all_rows('team');
+		$this->data['order'] = $this->Orders_model->get_row_single('orders',array('id'=>$id));
+
+		// print_r($this->data['orders']);die;
+
+
+		$this->load->template('orders/edit',$this->data);
+
+	}
+
+
+
+	public function delete($id)
+	{
+		if ( $this->permission['deleted'] == '0') 
+		{
+			redirect('home');
+		}
+		$this->Orders_model->delete('orders',array('id'=>$id));
+		redirect('orders');
+	}
+	
+
+
+
+
+	public function update()
+	{
+		if ( $this->permission['edit'] == '0') 
+		{
+			redirect('home');
+		}
+		$data = $this->input->post();
+		$id = $data['id_order'];
+		unset($data['id_order']);
+		$id = $this->Orders_model->update('orders',$data,array('id'=>$id));
+		if ($id) {
+			redirect('orders');
+		}
+	}
 
 
 
