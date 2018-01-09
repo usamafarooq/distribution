@@ -74,7 +74,12 @@ foreach ($fileds as $f) {
 		}
 	}
 	else{
-		$contents .= '<td><?php echo %module["'.$f['name'].'"] ?></td>';
+		if ($f['filed_type'] == 'file') {
+			$contents .= '<td><a href="<?php echo base_url() ?>/<?php echo %module["'.$f['name'].'"] ?>">View File</a></td>';
+		}
+		else{
+			$contents .= '<td><?php echo %module["'.$f['name'].'"] ?></td>';
+		}
 	}
 }													
 													$contents .= '<?php 
