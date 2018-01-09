@@ -26,8 +26,12 @@
                                 <div class="panel-heading">
                                     <div class="panel-title">
                                         <h4>View Order</h4>
-                                        
-                                        <a href="<?php echo base_url('orders/add') ?>"><button class="btn btn-info pull-right">Add</button></a>
+        
+
+        <button type="button"  class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#exportmodel">Export Csv</button>
+
+
+        <a href="<?php echo base_url('orders/add') ?>"><button class="btn btn-info pull-right">Add</button></a>
                                          
 
 
@@ -62,6 +66,7 @@
                                                     <th>Order Quantity</th>
                                                     <th>Growth</th>
                                                     <th>Packs Carton</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody> 
@@ -144,6 +149,10 @@ $month_key = date('m', strtotime('-'.$i.' month', strtotime($products_detail['da
                                         ?></td>
                                         <td><?php echo $products_detail['growth']; ?></td>
                                         <td><?php echo $products_detail['carton']; ?></td>
+   <td>
+<a href="<?php echo base_url(); ?>orders/edit/<?php echo $products_detail['id']; ?>">edit</a>
+<a href="<?php echo base_url(); ?>orders/delete/<?php echo $products_detail['id']; ?>">delete</a>
+   </td>
                                         </tr>
 
                                             <?php } ?>
@@ -167,6 +176,79 @@ $month_key = date('m', strtotime('-'.$i.' month', strtotime($products_detail['da
 
 
 
+
+<div class="modal fade" id="exportmodel" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h1 class="modal-title">Order Csv</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                
+
+
+
+<div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-bd ">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <h4>Add Distributor</h4>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-3 col-form-label">Station<span class="required">*</span></label>
+                                <div class="col-sm-9">
+                                    
+
+<select name="distribution_code" class="form-group row">
+  <option value="volvo">Volvo</option>
+  <option value="saab">Saab</option>
+</select>
+
+
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn btn-primary pull-right">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</div>
+
+
+
+
+
+
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -177,7 +259,7 @@ $month_key = date('m', strtotime('-'.$i.' month', strtotime($products_detail['da
                                             <div class="modal-body">
                                                 
 <form method="post" id="restrict_file" action="<?php echo base_url() ?>order/csv_upload" enctype="multipart/form-data">
-                          <input type="file" name="csv_name" id="csv_check" accept=".csv,.xlsx,.xls">
+  <input type="file" name="csv_name" id="csv_check" accept=".csv,.xlsx,.xls">
                                                 
 
                                             </div>
@@ -189,6 +271,12 @@ $month_key = date('m', strtotime('-'.$i.' month', strtotime($products_detail['da
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
+
+
+
+
+
+
 <script>	
 $('.csvbtn').attr('disabled',true);
 $('#csv_check').change(function() {
