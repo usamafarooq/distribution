@@ -39,6 +39,22 @@
                                         <input class="form-control" name="name[]" type="text" value="" id="example-text-input" placeholder="" required="">
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-3 col-form-label">Filed Type<span class="required">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="filed-type[]" required="">
+                                            <option>Select Type</option>
+                                            <option value="input">Input</option>
+                                            <option value="textarea">Textarea</option>
+                                            <option value="checkbox">Checkbox</option>
+                                            <option value="radio">Radio</option>
+                                            <option value="select">Dropdown</option>
+                                            <option value="file">File</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="form-group row">
                                     <label for="example-text-input" class="col-sm-3 col-form-label">Type<span class="required">*</span></label>
                                     <div class="col-sm-9">
