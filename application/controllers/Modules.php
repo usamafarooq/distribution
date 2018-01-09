@@ -135,7 +135,6 @@ class Modules extends MY_Controller {
 		$this->Modules_model->insert_batch('modules_fileds',$fileds);
 		$query = 'CREATE TABLE IF NOT EXISTS '.$tablename.' (id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY, '.implode(',', $filed).', user_id int(11) NOT NULL)';
 		$q = $this->Modules_model->query($query);
-		die;
 		$this->create_module($url.'_model',$fileds,$tablename);
 		$this->create_controller($url,$url.'_model',$tablename,$fileds);
 		$this->create_folder($url);
@@ -143,19 +142,6 @@ class Modules extends MY_Controller {
 		$this->create_create_view($url,$url.'_model',$tablename,$fileds);
 		$this->create_edit_view($url,$url.'_model',$tablename,$fileds);
 		redirect('modules');
-	}
-
-	public function test_get()
-	{
-		$fileds = $this->Modules_model->get_rows('modules_fileds',array('module_id'=>'15'));
-		$url = 'test';
-		$tablename = 'test';
-		$this->create_module($url.'_model',$fileds,$tablename);
-		$this->create_controller($url,$url.'_model',$tablename,$fileds);
-		$this->create_folder($url);
-		$this->create_main_view($url,$url.'_model',$tablename,$fileds);
-		$this->create_create_view($url,$url.'_model',$tablename,$fileds);
-		$this->create_edit_view($url,$url.'_model',$tablename,$fileds);
 	}
 
 	public function edit($id)
