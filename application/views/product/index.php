@@ -4,7 +4,9 @@
 			<div id="page-wrapper">
 				<!-- main content -->
 				<div class="content">
-					<!-- Content Header (Page header) -->
+
+
+							<!-- Content Header (Page header) -->
 					<div class="content-header">
 						<div class="header-icon">
 							<i class="pe-7s-box1"></i>
@@ -20,8 +22,30 @@
 						</div>
 					</div> <!-- /. Content Header (Page header) -->
 
+
+		
+
+
 					<div class="row">
 						<div class="col-sm-12">
+
+<?php 
+if ($this->session->flashdata('update')) {
+?>
+	<div class="alert alert-success alert-dismissible" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<strong>Success!</strong> Your Record Successfully Updated.
+	</div>
+
+<?php } elseif($this->session->flashdata('insert')) { ?>
+
+	<div class="alert alert-success alert-dismissible" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<strong>Success!</strong> Your Record Successfully Inserted.
+	</div>
+
+<?php } ?>
+
 							<div class="panel panel-bd">
 								<div class="panel-heading">
 									<div class="panel-title">
@@ -35,6 +59,7 @@
 										<button type="button" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#myModal">Import Csv</button>
 
 			<a href="<?php echo base_url('product/export_csv_file') ?>" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;">Export Csv File</a>
+
 
 
 
@@ -112,6 +137,11 @@
 
 
 
+
+
+
+
+
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -134,13 +164,13 @@
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
-<script>	
+<script>
 $('.csvbtn').attr('disabled',true);
 $('#csv_check').change(function() {
       if($(this).val()) {
         
         $('.csvbtn').attr('disabled',false);
       } 
-    });
-
+});
 </script>
+

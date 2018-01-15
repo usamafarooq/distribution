@@ -21,7 +21,7 @@
         </div>
         <!-- /. Content Header (Page header) -->
 
-        <form method="post" action="<?php echo base_url() ?>orders/update" enctype="multipart/form-data">
+        <form method="post" action="<?php echo base_url() ?>orders/update" enctype="multipart/form-data" id="submit-form">
 
             <div class="row">
                 <div class="col-sm-12">
@@ -97,3 +97,23 @@
 </div>
 <!-- /#wrapper -->
 <!-- START CORE PLUGINS -->
+
+
+<script>
+$( "#submit-form" ).submit(function(e) {
+        var form = this;
+        e.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, Update it!",
+            closeOnConfirm: false
+        },
+        function() {
+        form.submit();
+        });
+    });
+</script>

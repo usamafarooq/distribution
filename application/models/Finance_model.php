@@ -1,9 +1,7 @@
 <?php 
 
-class Orders_model extends MY_Model
+class Finance_model extends MY_Model
 {
-	
-
 	function order_index()
 	{
 		return $this->db->query("
@@ -69,10 +67,6 @@ SELECT o.*, d.scm_name,d.scm_code, c.closing, p.product_name, p.product_code, p.
 		',') as month, c.closing FROM product left join (select sales.packcode, sum(sales.sales) as sale, MONTH(sales.date) as month, sales.closing from sales where sales.distribution_code = '".$scm_code."' and sales.date >= DATE('".$first_date."') and sales.date <= DATE('".$last_date."') and sales.user_id = '".$user_id."' GROUP BY MONTH(sales.date)) as s on s.packcode = product.product_code left join (select closing, packcode from sales where distribution_code = '".$scm_code."' and sales.user_id = '".$user_id."' order by id desc limit 1) as c on c.packcode = product.product_code GROUP by product.id")->result_array();
 
 	}
-
-
-
-
 
 
 }

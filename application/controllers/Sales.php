@@ -55,6 +55,8 @@ class Sales extends MY_Controller {
 		$data['user_id'] = $this->session->userdata('user_id');
 		$id = $this->Sales_model->insert('sales',$data);
 		if ($id) {
+
+			$this->session->set_flashdata('insert', true);
 			redirect('sales');
 		}
 	}
@@ -83,7 +85,9 @@ class Sales extends MY_Controller {
 		unset($data['id']);
 		$id = $this->Sales_model->update('sales',$data,array('id'=>$id));
 		if ($id) {
-			redirect('sales');
+
+		$this->session->set_flashdata('update', true);
+		redirect('sales');
 		}
 	}
 

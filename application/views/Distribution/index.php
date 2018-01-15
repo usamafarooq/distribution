@@ -91,7 +91,7 @@
 														<?php 
 															if ($permission['deleted'] == '1') {
 														?>
-		                                                <a href="<?php echo base_url() ?>distribution/delete/<?php echo $distributor['id'] ?>"><img src="<?php echo base_url() ?>assets/d-icon.png" title="Delete" alt="Delete" width="35" height="35"></a>
+		<a href="<?php echo base_url() ?>distribution/delete/<?php echo $distributor['id'] ?>" class="delete_data"><img src="<?php echo base_url() ?>assets/d-icon.png" title="Delete" alt="Delete" width="35" height="35"></a>
 		                                                <?php } ?>
 	                                                </td>
 	                                                <?php } ?>
@@ -134,3 +134,23 @@
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
+
+<script>
+$(".delete_data").click(function(e){   
+  var url = $(this).attr('href');
+  e.preventDefault();
+   swal({
+  title: "Are you sure?",
+  text: "Your will not be able to recover this imaginary file!",
+  type: "warning",
+  showCancelButton: true,
+  confirmButtonClass: "btn-danger",
+  confirmButtonText: "Yes, delete it!",
+  closeOnConfirm: false
+},
+function(){
+  swal("Deleted!", "Your imaginary file has been deleted.", "success");
+  window.location.replace(url);
+});
+
+ });
