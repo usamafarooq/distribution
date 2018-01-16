@@ -80,6 +80,8 @@ class Modules extends MY_Controller {
 		$url = $module['url'];
 		$name = $this->input->post('name');
 		$type = $this->input->post('type');
+		$filed_type = $this->input->post('filed-type');
+		$options = $this->input->post('options');
 		$length = $this->input->post('length');
 		$required = $this->input->post('required');
 		$relation = $this->input->post('relation_table');
@@ -113,6 +115,8 @@ class Modules extends MY_Controller {
 			$fileds[] = array(
 				'name' => $text, 
 				'type' => $type[$i], 
+				'filed_type' => $filed_type[$i], 
+				'options' => $options[$i], 
 				'length' => $length[$i], 
 				'required' => (isset($required[$i])) ? 1 : 0, 
 				'module_id' => $id, 
