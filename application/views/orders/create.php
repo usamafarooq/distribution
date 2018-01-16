@@ -156,7 +156,7 @@ for ($i = -3; $i <= -1; $i++){
 
                         
 
-<input type="submit" name="">
+<input type="submit" name="" class="btn btn-primary pull-right">
 </form>
                         </div>
                     </div>
@@ -165,10 +165,6 @@ for ($i = -3; $i <= -1; $i++){
             </div><!-- /#page-wrapper -->
         </div><!-- /#wrapper -->
         <!-- START CORE PLUGINS -->
-
-
-
-
 
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog">

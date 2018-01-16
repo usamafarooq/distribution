@@ -29,6 +29,22 @@
         <link href="<?php echo  base_url()?>admin_assets/assets/plugins/amcharts/export.css" rel="stylesheet" type="text/css" />
 
 
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+<!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.2.12/jquery.jgrowl.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.2.12/jquery.jgrowl.min.js"></script> -->
+        
+
+
 <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
  <script src="<?php echo base_url() ?>assets/sweet/dist/sweetalert-dev.js"></script>
@@ -238,3 +254,14 @@
             setInterval(count_notification,2000);
 
             </script>
+<style>
+    
+.alert-dismissible .close {
+    font-size: 23px !important;
+    top: -2px !important;
+    right: -23px !important;
+    text-shadow: none;
+    opacity: 1;
+}
+
+</style>

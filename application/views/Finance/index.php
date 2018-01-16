@@ -4,9 +4,7 @@
 			<div id="page-wrapper">
 				<!-- main content -->
 				<div class="content">
-
-
-							<!-- Content Header (Page header) -->
+					<!-- Content Header (Page header) -->
 					<div class="content-header">
 						<div class="header-icon">
 							<i class="pe-7s-box1"></i>
@@ -22,30 +20,8 @@
 						</div>
 					</div> <!-- /. Content Header (Page header) -->
 
-
-		
-
-
 					<div class="row">
 						<div class="col-sm-12">
-
-<?php 
-if ($this->session->flashdata('update')) {
-?>
-	<div class="alert alert-success alert-dismissible" role="alert">
-	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<strong>Success!</strong> Your Record Successfully Updated.
-	</div>
-
-<?php } elseif($this->session->flashdata('insert')) { ?>
-
-	<div class="alert alert-success alert-dismissible" role="alert">
-	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<strong>Success!</strong> Your Record Successfully Inserted.
-	</div>
-
-<?php } ?>
-
 							<div class="panel panel-bd">
 								<div class="panel-heading">
 									<div class="panel-title">
@@ -53,13 +29,12 @@ if ($this->session->flashdata('update')) {
 										<?php 
 											if ($permission['created'] == '1') {
 										?>
-										<a href="<?php echo base_url('product/create') ?>"><button class="btn btn-info pull-right">Add Product</button></a>
+										<a href="<?php echo base_url('finance/create') ?>"><button class="btn btn-info pull-right">Add Product</button></a>
 										<?php } ?>
 
 										<button type="button" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#myModal">Import Csv</button>
 
-			<a href="<?php echo base_url('product/export_csv_file') ?>" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;">Export Csv File</a>
-
+			<a href="<?php echo base_url('finance/export_csv_file') ?>" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;">Export Csv File</a>
 
 
 
@@ -72,12 +47,13 @@ if ($this->session->flashdata('update')) {
 											<thead>
 												<tr>
 													<th>Id</th>
-													<th>Name</th>
-													<th>Description</th>
-													<th>Product Code</th>
-													<th>Team</th>
-													<th>SCM Product Code</th>
-													<th>TP</th>
+													<th>Distribution Name</th>
+													<th>Product Name</th>
+													<th>Order1</th>
+													<th>Order2</th>
+													<th>Order3</th>
+													<th>Growth</th>
+													<th>Packs Carton</th>
 													
 													<?php 
 														if ($permission['edit'] == '1' || $permission['deleted'] == '1'){
@@ -88,17 +64,18 @@ if ($this->session->flashdata('update')) {
 											</thead>
 										    <tbody>
 										    	<?php
-										    		foreach ($products as $product) {
+										    		foreach ($orders as $order) {
 										    	?>
 												<tr>
-													<td><?php echo $product['id'] ?></td>
+													<td><?php echo $order['id'] ?></td>
 
-										<td><?php echo $product['product_name'] ?></td>
-										<td><?php echo $product['description'] ?></td>
-										<td><?php echo $product['product_code'] ?></td>
-										<td><?php echo $product['team'] ?></td>
-										<td><?php echo $product['scm_product_code'] ?></td>
-										<td><?php echo $product['tp_product'] ?></td>
+										<td><?php echo $order['scm_name'] ?></td>
+										<td><?php echo $order['product_name'] ?></td>
+										<td><?php echo $order['order_field'] ?></td>
+										<td><?php echo $order['order_field2'] ?></td>
+										<td><?php echo $order['order_field3'] ?></td>
+										<td><?php echo $order['growth'] ?></td>
+										<td><?php echo $order['carton'] ?></td>
 
 													<?php 
 														if ($permission['edit'] == '1' || $permission['deleted'] == '1'){
@@ -107,12 +84,12 @@ if ($this->session->flashdata('update')) {
 														<?php 
 															if ($permission['edit'] == '1') {
 														?>
-														<a href="<?php echo base_url() ?>product/edit/<?php echo $product['id'] ?>"><img src="<?php echo base_url() ?>assets/record1.png" title="View Order" alt="View Order" width="35" height="35"></a>
+														<a href="<?php echo base_url() ?>finance/edit/<?php echo $order['id'] ?>"><img src="<?php echo base_url() ?>assets/record1.png" title="View Order" alt="View Order" width="35" height="35"></a>
 														<?php } ?>
 														<?php 
 															if ($permission['deleted'] == '1') {
 														?>
-		                                                <a href="<?php echo base_url() ?>product/delete/<?php echo $product['id'] ?>"><img src="<?php echo base_url() ?>assets/d-icon.png" title="Delete" alt="Delete" width="35" height="35"></a>
+		                                                <a href="<?php echo base_url() ?>finance/delete/<?php echo $order['id'] ?>"><img src="<?php echo base_url() ?>assets/d-icon.png" title="Delete" alt="Delete" width="35" height="35"></a>
 		                                                <?php } ?>
 	                                                </td>
 	                                                <?php } ?>
@@ -137,11 +114,6 @@ if ($this->session->flashdata('update')) {
 
 
 
-
-
-
-
-
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -151,7 +123,7 @@ if ($this->session->flashdata('update')) {
                                             </div>
                                             <div class="modal-body">
                                                 
-<form method="post" id="restrict_file" action="<?php echo base_url() ?>product/csv_upload" enctype="multipart/form-data">
+<form method="post" id="restrict_file" action="<?php echo base_url() ?>finance/csv_upload" enctype="multipart/form-data">
                           <input type="file" name="csv_name" id="csv_check" accept=".csv,.xlsx,.xls">
                                                 
 
@@ -164,13 +136,13 @@ if ($this->session->flashdata('update')) {
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
-<script>
+<script>	
 $('.csvbtn').attr('disabled',true);
 $('#csv_check').change(function() {
       if($(this).val()) {
         
         $('.csvbtn').attr('disabled',false);
       } 
-});
-</script>
+    });
 
+</script>

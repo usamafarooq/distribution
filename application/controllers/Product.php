@@ -51,7 +51,9 @@ class Product extends MY_Controller {
 		$data['user_id'] = $this->session->userdata('user_id');
 		$id = $this->Product_model->insert('product',$data);
 		if ($id) {
-			redirect('product');
+
+		$this->session->set_flashdata('insert', true);
+		redirect('product');
 		}
 	}
 
@@ -78,6 +80,10 @@ class Product extends MY_Controller {
 		unset($data['id']);
 		$id = $this->Product_model->update('product',$data,array('id'=>$id));
 		if ($id) {
+
+		$this->session->set_flashdata('update', true);
+
+
 			redirect('product');
 		}
 	}

@@ -23,6 +23,25 @@
 
 					<div class="row">
 						<div class="col-sm-12">
+<?php 
+if ($this->session->flashdata('update')) {
+?>
+	<div class="alert alert-success alert-dismissible" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<strong>Success!</strong> Your Record Successfully Updated.
+	</div>
+
+<?php } elseif($this->session->flashdata('insert')) { ?>
+
+	<div class="alert alert-success alert-dismissible" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<strong>Success!</strong> Your Record Successfully Inserted.
+	</div>
+
+<?php } ?>
+
+
+
 							<div class="panel panel-bd">
 								<div class="panel-heading">
 									<div class="panel-title">
@@ -88,7 +107,7 @@
 														<?php 
 															if ($permission['deleted'] == '1') {
 														?>
-		                                                <a href="<?php echo base_url() ?>sales/delete/<?php echo $order['id'] ?>"><img src="<?php echo base_url() ?>assets/d-icon.png" title="Delete" alt="Delete" width="35" height="35"></a>
+<a href="<?php echo base_url() ?>sales/delete/<?php echo $order['id'] ?>" class="delete_data"><img src="<?php echo base_url() ?>assets/d-icon.png" title="Delete" alt="Delete" width="35" height="35"></a>
 		                                                <?php } ?>
 	                                                </td>
 	                                                <?php } ?>
@@ -144,4 +163,24 @@ $('#csv_check').change(function() {
       } 
     });
 
+</script>
+<script>
+$(".delete_data").click(function(e){   
+  var url = $(this).attr('href');
+  e.preventDefault();
+   swal({
+  title: "Are you sure?",
+  text: "Your will not be able to recover this imaginary file!",
+  type: "warning",
+  showCancelButton: true,
+  confirmButtonClass: "btn-danger",
+  confirmButtonText: "Yes, delete it!",
+  closeOnConfirm: false
+},
+function(){
+  swal("Deleted!", "Your imaginary file has been deleted.", "success");
+  window.location.replace(url);
+});
+
+ });
 </script>
