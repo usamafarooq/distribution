@@ -1,4 +1,3 @@
-
 		<!-- /.Navbar  Static Side -->
 			<div class="control-sidebar-bg"></div>
 			<!-- Page Content -->
@@ -11,50 +10,31 @@
 							<i class="pe-7s-box1"></i>
 						</div>
 						<div class="header-title">
-							<h1>View Sales</h1>
+							<h1>View Product</h1>
 							<small> </small>
 							<ol class="breadcrumb">
 								<li><a href="<?php echo base_url() ?>"><i class="pe-7s-home"></i> Home</a></li>
 
-								<li class="active">View Sales</li>
+								<li class="active">View Product</li>
 							</ol>
 						</div>
 					</div> <!-- /. Content Header (Page header) -->
 
 					<div class="row">
 						<div class="col-sm-12">
-<?php 
-if ($this->session->flashdata('update')) {
-?>
-	<div class="alert alert-success alert-dismissible" role="alert">
-	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<strong>Success!</strong> Your Record Successfully Updated.
-	</div>
-
-<?php } elseif($this->session->flashdata('insert')) { ?>
-
-	<div class="alert alert-success alert-dismissible" role="alert">
-	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<strong>Success!</strong> Your Record Successfully Inserted.
-	</div>
-
-<?php } ?>
-
-
-
 							<div class="panel panel-bd">
 								<div class="panel-heading">
 									<div class="panel-title">
-										<h4>View Sales</h4>
+										<h4>View Product</h4>
 										<?php 
 											if ($permission['created'] == '1') {
 										?>
-										<a href="<?php echo base_url('sales/create') ?>"><button class="btn btn-info pull-right">Add Sale</button></a>
+										<a href="<?php echo base_url('finance/create') ?>"><button class="btn btn-info pull-right">Add Product</button></a>
 										<?php } ?>
 
 										<button type="button" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#myModal">Import Csv</button>
 
-			<a href="<?php echo base_url('sales/export_csv_file') ?>" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;">Export Csv File</a>
+			<a href="<?php echo base_url('distributor/export_csv_file') ?>" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;">Export Csv File</a>
 
 
 
@@ -67,11 +47,17 @@ if ($this->session->flashdata('update')) {
 											<thead>
 												<tr>
 													<th>Id</th>
-													<th>Distribution</th>
-													<th>Packcode</th>
+													<th>Scm Order No</th>
+													<th>Scm Order Name</th>
+													<th>Product Name</th>
+													<th>Dc No</th>
 													<th>Date</th>
-													<th>Sales</th>
-													<th>Closing</th>
+													<th>C.N</th>
+													<th>Kg</th>
+													<th>Cartons</th>
+													<th>Packs</th>
+													<th>Receive Quantity</th>
+													
 													
 													<?php 
 														if ($permission['edit'] == '1' || $permission['deleted'] == '1'){
@@ -82,18 +68,21 @@ if ($this->session->flashdata('update')) {
 											</thead>
 										    <tbody>
 										    	<?php
-										    		foreach ($orders as $order) {
+										    		foreach ($distributors as $data) {
 										    	?>
 												<tr>
-													<td><?php echo $order['id'] ?></td>
-
-										<td>
-										<?php echo $order['scm_name'] ?>	
-										</td>
-										<td><?php echo $order['product_name'] ?></td>
-										<td><?php echo $order['date'] ?></td>
-										<td><?php echo $order['sales'] ?></td>
-										<td><?php echo $order['closing'] ?></td>
+													
+										<td><?php echo $data['id'] ?></td>
+										<td><?php echo $data['scm_order_no'] ?></td>
+										<td><?php echo $data['scm_name'] ?></td>
+										<td><?php echo $data['product_name'] ?></td>
+										<td><?php echo $data['dc_no'] ?></td>
+										<td><?php echo $data['date'] ?></td>
+										<td><?php echo $data['cn'] ?></td>
+										<td><?php echo $data['kg'] ?></td>
+										<td><?php echo $data['cartons'] ?></td>
+										<td><?php echo $data['packs'] ?></td>
+										<td><?php echo $data['receive_quantity'] ?></td>
 
 													<?php 
 														if ($permission['edit'] == '1' || $permission['deleted'] == '1'){
@@ -102,12 +91,12 @@ if ($this->session->flashdata('update')) {
 														<?php 
 															if ($permission['edit'] == '1') {
 														?>
-														<a href="<?php echo base_url() ?>sales/edit/<?php echo $order['id'] ?>"><img src="<?php echo base_url() ?>assets/record1.png" title="View Order" alt="View Order" width="35" height="35"></a>
+														<!-- <a href="<?php echo base_url() ?>finance/edit/<?php echo $data['id'] ?>"><img src="<?php echo base_url() ?>assets/record1.png" title="View Order" alt="View Order" width="35" height="35"></a> -->
 														<?php } ?>
 														<?php 
 															if ($permission['deleted'] == '1') {
 														?>
-<a href="<?php echo base_url() ?>sales/delete/<?php echo $order['id'] ?>" class="delete_data"><img src="<?php echo base_url() ?>assets/d-icon.png" title="Delete" alt="Delete" width="35" height="35"></a>
+		                                                <!-- <a href="<?php echo base_url() ?>finance/delete/<?php echo $data['id'] ?>"><img src="<?php echo base_url() ?>assets/d-icon.png" title="Delete" alt="Delete" width="35" height="35"></a> -->
 		                                                <?php } ?>
 	                                                </td>
 	                                                <?php } ?>
@@ -137,11 +126,11 @@ if ($this->session->flashdata('update')) {
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h1 class="modal-title">Order Csv</h1>
+                                                <h1 class="modal-title">Modal title</h1>
                                             </div>
                                             <div class="modal-body">
                                                 
-<form method="post" id="restrict_file" action="<?php echo base_url() ?>sales/csv_upload" enctype="multipart/form-data">
+<form method="post" id="restrict_file" action="<?php echo base_url() ?>distributor/csv_upload" enctype="multipart/form-data">
                           <input type="file" name="csv_name" id="csv_check" accept=".csv,.xlsx,.xls">
                                                 
 
@@ -151,9 +140,9 @@ if ($this->session->flashdata('update')) {
 
                                                 </form>
                                             </div>
-                                        </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-content
                                     </div><!-- /.modal-dialog -->
-                                </div><!-- /.modal -->
+                                </div><!-- /.modal --> 
 <script>	
 $('.csvbtn').attr('disabled',true);
 $('#csv_check').change(function() {
@@ -163,24 +152,4 @@ $('#csv_check').change(function() {
       } 
     });
 
-</script>
-<script>
-$(".delete_data").click(function(e){   
-  var url = $(this).attr('href');
-  e.preventDefault();
-   swal({
-  title: "Are you sure?",
-  text: "Your will not be able to recover this imaginary file!",
-  type: "warning",
-  showCancelButton: true,
-  confirmButtonClass: "btn-danger",
-  confirmButtonText: "Yes, delete it!",
-  closeOnConfirm: false
-},
-function(){
-  swal("Deleted!", "Your imaginary file has been deleted.", "success");
-  window.location.replace(url);
-});
-
- });
 </script>

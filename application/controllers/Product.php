@@ -103,7 +103,9 @@ class Product extends MY_Controller {
 	    $delimiter = ",";
 	    $filename = "names.csv";
 	    $f = fopen('php://memory', 'w');
-		$products_csv_upload = $this->Product_model->all_rows('product');		
+	     $fields = array('product_name','description','Product Code','Team','Scm Product Code','tp_product');
+		$products_csv_upload = $this->Product_model->all_rows('product');
+		fputcsv($f,$fields, $delimiter);		
 		foreach($products_csv_upload as $row){
 			$lineData = array($row['product_name'],$row['description'],$row['product_code'],$row['team'],$row['scm_product_code'],$row['tp_product']);
 			fputcsv($f,$lineData, $delimiter);

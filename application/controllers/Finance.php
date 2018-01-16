@@ -11,7 +11,7 @@ class Finance extends MY_Controller {
         $this->user_type = $this->session->userdata('user_type');
         $this->id = $this->session->userdata('user_id');
         $this->permission = $this->get_permission($this->module,$this->user_type);
-<<<<<<< HEAD
+
         $this->dis_permission = $this->get_permission('distribution',$this->user_type);
         $this->pro_permission = $this->get_permission('product',$this->user_type);
     }
