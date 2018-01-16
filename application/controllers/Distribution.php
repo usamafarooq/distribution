@@ -147,6 +147,8 @@ class Distribution extends MY_Controller {
 		    $delimiter = ",";
 		    $filename = "distribution.csv";
 		    $f = fopen('php://memory', 'w');
+		    $fields = array('User Name','Email','SCM Code','SCM Name','Dsr Code','Dsr Name','Station');
+		    fputcsv($f,$fields, $delimiter);
 			if ( $this->permission['view_all'] == '1')
 			{
 				$products_csv_upload = $this->Distribution_model->view_data_index();
