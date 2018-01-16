@@ -2,7 +2,7 @@
 
 class Finance_model extends MY_Model
 {
-<<<<<<< HEAD
+
 	function order_index()
 	{
 		return $this->db->query("
@@ -70,7 +70,7 @@ SELECT o.*, d.scm_name,d.scm_code, c.closing, p.product_name, p.product_code, p.
 	}
 
 
-=======
+
 	public function get_orders($id=null)
 	{
 		$this->db->select('o.*,d.scm_name,p.product_name')
@@ -83,5 +83,5 @@ SELECT o.*, d.scm_name,d.scm_code, c.closing, p.product_name, p.product_code, p.
 		}
 		return $this->db->get()->result_array();
 	}
->>>>>>> 1e51ed1f37ddddba5eebf1b9aab4f89eb016273a
+
 }

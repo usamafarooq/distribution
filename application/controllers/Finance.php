@@ -16,26 +16,26 @@ class Finance extends MY_Controller {
         $this->pro_permission = $this->get_permission('product',$this->user_type);
     }
 
-    public function index()
-    {
-    	if ( $this->permission['view'] == '0' && $this->permission['view_all'] == '0' ) 
-		{
-			redirect('home');
-		}
-		$this->data['title'] = 'finance';
-		if ( $this->permission['view_all'] == '1'){
+  //   public function index()
+  //   {
+  //   	if ( $this->permission['view'] == '0' && $this->permission['view_all'] == '0' ) 
+		// {
+		// 	redirect('home');
+		// }
+		// $this->data['title'] = 'finance';
+		// if ( $this->permission['view_all'] == '1'){
 			
-		$this->data['index_data'] = $this->Finance_model->order_index();
-		$this->data['distribution_code'] = $this->Finance_model->all_rows('distribution');
-				}
-		elseif ($this->permission['view'] == '1') {
-			$this->data['index_data'] = $this->Finance_model->order_index_single($this->id);
-		}
-		$this->data['permission'] = $this->permission;
-		// print_r($this->data['index_data']);die;
-		$this->load->template('finance/index',$this->data);
+		// $this->data['index_data'] = $this->Finance_model->order_index();
+		// $this->data['distribution_code'] = $this->Finance_model->all_rows('distribution');
+		// 		}
+		// elseif ($this->permission['view'] == '1') {
+		// 	$this->data['index_data'] = $this->Finance_model->order_index_single($this->id);
+		// }
+		// $this->data['permission'] = $this->permission;
+		// // print_r($this->data['index_data']);die;
+		// $this->load->template('finance/index',$this->data);
 		
-    }
+  //   }
 
 
 
@@ -102,6 +102,7 @@ public function csv_upload()
 	    $f = fopen('php://memory', 'w');
 	    $fields = array('Distributor Code','Order Id','Blank1','Blank2','Scm Product Code','Qty','Hardcoded');
 
+
 	    $blank1 = '';
 	    $blank2 = '';
 	    $hardcode = '00000';
@@ -124,8 +125,7 @@ public function csv_upload()
     	fpassthru($f);
     }
 
-=======
-    }
+    
 
     public function index()
 	{
@@ -144,5 +144,5 @@ public function csv_upload()
 		$this->load->template('finance/index',$this->data);
 	}
 
->>>>>>> 1e51ed1f37ddddba5eebf1b9aab4f89eb016273a
+
 }

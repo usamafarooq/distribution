@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 08, 2018 at 07:16 AM
+-- Generation Time: Jan 16, 2018 at 09:10 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -44,10 +44,69 @@ CREATE TABLE `distribution` (
 --
 
 INSERT INTO `distribution` (`id`, `scm_code`, `scm_name`, `dsr_code`, `dsr_name`, `station`, `distribution_id`, `user_id`) VALUES
-(1, '000449', 'ABDULLAH MEDICOS - DADU', '164', 'Abdullah Medicos', 'Dadu', 20, 2),
-(2, '14', 'AHSAN TRADERS', '0042', 'Ahsan Traders', 'Rahim Yar Khan', 21, 2),
-(5, '900345', 'ABDULLAH MEDICOS - DADU', '1645454', 'Abdullah Medicos', 'Dadu', 26, 2),
-(6, '2320949', 'ABDULLAH MEDICOS - DADU', '16454111', 'Abdullah Medicos', 'Dadu', 27, 2);
+(7, '112321', 'ghgh', '2323', 'errtrt', 'tttt', 28, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `factory`
+--
+
+CREATE TABLE `factory` (
+  `id` int(50) NOT NULL,
+  `scm_order_no` int(50) NOT NULL,
+  `dc_no` int(50) NOT NULL,
+  `date` varchar(50) NOT NULL,
+  `cn` varchar(50) NOT NULL,
+  `kg` varchar(50) NOT NULL,
+  `cartons` varchar(50) NOT NULL,
+  `packs` varchar(50) NOT NULL,
+  `receive_quantity` int(50) NOT NULL DEFAULT '0',
+  `user_id` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `factory`
+--
+
+INSERT INTO `factory` (`id`, `scm_order_no`, `dc_no`, `date`, `cn`, `kg`, `cartons`, `packs`, `receive_quantity`, `user_id`) VALUES
+(1, 14, 2, '6', '6', '6', 'demo', 'demodc', 0, 2),
+(2, 112321, 2, '6', '6', '6', 'demo1', 'demodc1', 1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `finance_order`
+--
+
+CREATE TABLE `finance_order` (
+  `id` int(50) NOT NULL,
+  `scm_code` varchar(50) NOT NULL,
+  `order_id` int(50) NOT NULL,
+  `qty1` int(50) NOT NULL,
+  `qty2` int(50) NOT NULL,
+  `qty3` int(50) NOT NULL,
+  `remarks` varchar(50) NOT NULL,
+  `dc_no` varchar(50) NOT NULL,
+  `user_id` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `finance_order`
+--
+
+INSERT INTO `finance_order` (`id`, `scm_code`, `order_id`, `qty1`, `qty2`, `qty3`, `remarks`, `dc_no`, `user_id`) VALUES
+(1, '14', 2, 6, 6, 6, 'demo', 'demodc', 2),
+(2, '449', 3, 5, 5, 5, 'demo', 'demodc', 2),
+(3, '14', 5, 4, 4, 4, 'demo', 'demodc', 2),
+(4, '112321', 7, 6, 6, 6, 'demo', 'demodc', 2),
+(5, '449', 4, 6, 0, 6, 'demo', 'demodc', 2),
+(6, 'Distributor Code', 0, 0, 0, 0, 'Qty', 'Hardcoded', 2),
+(7, '14', 2, 0, 0, 3, '15', '00000', 2),
+(8, '000449', 3, 0, 0, 3, '15', '00000', 2),
+(9, '000449', 4, 0, 0, 245, '18', '00000', 2),
+(10, '14', 5, 0, 0, 3, '9', '00000', 2),
+(11, '112321', 7, 0, 0, 3, '18', '00000', 2);
 
 -- --------------------------------------------------------
 
@@ -78,7 +137,10 @@ INSERT INTO `modules` (`id`, `name`, `main_name`, `sort`, `icon`, `url`, `user_i
 (10, 'Product', 'product', 6, 'home', 'product', 2),
 (11, 'Distribution', 'distribution', 7, 'home', 'distribution', 2),
 (12, 'Sales', 'sales', 8, 'home', 'sales', 2),
-(13, 'Order', 'orders', 9, 'home', 'orders', 2);
+(13, 'Order', 'orders', 9, 'home', 'orders', 2),
+(14, 'Finance', 'finance', 9, 'home', 'finance', 2),
+(15, 'Factory', 'factory', 12, 'home', 'factory', 2),
+(16, 'Distributor', 'distributor', 15, 'home', 'distributor', 2);
 
 -- --------------------------------------------------------
 
@@ -119,8 +181,11 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `distribution_code`, `pak_code`, `order_field`, `order_field2`, `order_field3`, `growth`, `carton`, `date`, `user_id`) VALUES
-(1, '14', '184850', 4, 4, 4, 4, 3, '2018-01-04', 2),
-(2, '14', '184850', 5, 5, 5, 3, 50, '2017-12-04', 2);
+(2, '14', '184850', 5, 5, 5, 3, 50, '2017-12-04', 2),
+(3, '000449', '184850', 5, 5, 5, 7, 7, '2018-01-09', 2),
+(4, '000449', '184001', 6, 6, 6, 7, 7, '2018-01-09', 2),
+(5, '14', '184850', 3, 3, 3, 90, 90, '2018-01-09', 2),
+(7, '112321', '184850', 6, 6, 6, 4, 4, '2018-01-15', 2);
 
 -- --------------------------------------------------------
 
@@ -152,15 +217,18 @@ INSERT INTO `permission` (`id`, `module_id`, `user_id`, `user_type_id`, `view`, 
 (35, 2, 2, 14, 1, 0, 0, 0, 0, 0),
 (36, 3, 2, 14, 0, 0, 0, 0, 0, 0),
 (37, 5, 2, 14, 0, 0, 0, 0, 0, 0),
-(148, 2, 2, 1, 1, 1, 1, 1, 1, 1),
-(149, 3, 2, 1, 1, 1, 1, 1, 1, 1),
-(150, 5, 2, 1, 1, 1, 1, 1, 1, 1),
-(151, 7, 2, 1, 1, 1, 1, 1, 1, 1),
-(152, 9, 2, 1, 1, 1, 1, 1, 1, 1),
-(153, 10, 2, 1, 1, 1, 1, 1, 1, 1),
-(154, 11, 2, 1, 1, 1, 1, 1, 1, 1),
-(155, 12, 2, 1, 1, 1, 1, 1, 1, 1),
-(156, 13, 2, 1, 1, 1, 1, 1, 1, 1);
+(232, 2, 2, 1, 1, 1, 1, 1, 1, 1),
+(233, 3, 2, 1, 1, 1, 1, 1, 1, 1),
+(234, 5, 2, 1, 1, 1, 1, 1, 1, 1),
+(235, 7, 2, 1, 1, 1, 1, 1, 1, 1),
+(236, 9, 2, 1, 1, 1, 1, 1, 1, 1),
+(237, 10, 2, 1, 1, 1, 1, 1, 1, 1),
+(238, 11, 2, 1, 1, 1, 1, 1, 1, 1),
+(239, 12, 2, 1, 1, 1, 1, 1, 1, 1),
+(240, 13, 2, 1, 1, 1, 1, 1, 1, 1),
+(241, 14, 2, 1, 1, 1, 1, 1, 1, 1),
+(242, 15, 2, 1, 1, 1, 1, 1, 1, 1),
+(243, 16, 2, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -188,9 +256,7 @@ INSERT INTO `product` (`id`, `product_name`, `description`, `product_code`, `tea
 (2, 'TCTIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 184001, 'abcde', 245, 16700, 2),
 (6, 'T3TIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 101841, 'arcde', 241, 1670, 2),
 (7, 'B3TIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 913, 'arcde', 242, 1670, 2),
-(8, 'FATTIFLOR', 'POWD. SACHE 0010G  0250MG X 10', 1000841, 'arcde', 2438, 16900, 2),
-(10, 'ZATTIIFLORA', 'POWD. SACHE 0010G  0250MG X 10', 9040847, 'arcde', 211145, 36411, 2),
-(11, 'PondsCream', 'POWD. SACHE 0010G  0250MG X 10', 90991, 'arcde', 215545, 6766, 2);
+(8, 'FATTIFLOR', 'POWD. SACHE 0010G 0250MG X 10', 1000841, 'abcde', 2428, 361011, 2);
 
 -- --------------------------------------------------------
 
@@ -213,9 +279,10 @@ CREATE TABLE `sales` (
 --
 
 INSERT INTO `sales` (`id`, `distribution_code`, `packcode`, `date`, `sales`, `closing`, `user_id`) VALUES
-(10, '14', '184850', '2017-12-31', '4343', 3434, 2),
+(10, '14', '184850', '2017-12-31', '4345', 3434, 2),
 (11, '14', '184850', '2017-12-26', '4343', 3414, 2),
-(12, '14', '184850', '2017-11-26', '4343', 3414, 2);
+(12, '14', '184850', '2017-11-26', '4343', 3414, 2),
+(13, '000449', '101841', '2018-01-13', '23', 8, 2);
 
 -- --------------------------------------------------------
 
@@ -270,11 +337,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
 (17, 'west22', 'hwest22@gmail.com', 'dbc4d84bfcfe2284ba11beffb853a8c4', 14),
 (18, 'opp', 'opp@milya.com', 'e201220da86c13f4d9badaab658fa973', 14),
 (19, 'urrr', 'urrr@gmail.com', '549ce24fb62238d013a6e222cb4d41d8', 14),
-(20, 'DADU', 'DADU@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 14),
-(21, 'AHSAN', 'AHSAN@gmail.com', 'd6a9a933c8aafc51e55ac0662b6e4d4a', 14),
 (22, '21321', 'dasdas', 'd41d8cd98f00b204e9800998ecf8427e', 14),
-(26, 'xyzmg', 'xyzmg@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 14),
-(27, 'mojjojo1', 'mojjojo1@gmail.com', 'd41d8cd98f00b204e9800998ecf8427e', 14);
+(28, 'tyyy', 'tyyy@gmail.com', 'b7bc2a2f5bb6d521e64c8974c143e9a0', 14);
 
 -- --------------------------------------------------------
 
@@ -309,6 +373,18 @@ ALTER TABLE `distribution`
   ADD UNIQUE KEY `scm_code` (`scm_code`),
   ADD UNIQUE KEY `dsr_code` (`dsr_code`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `factory`
+--
+ALTER TABLE `factory`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `finance_order`
+--
+ALTER TABLE `finance_order`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `modules`
@@ -372,32 +448,42 @@ ALTER TABLE `user_type`
 -- AUTO_INCREMENT for table `distribution`
 --
 ALTER TABLE `distribution`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `factory`
+--
+ALTER TABLE `factory`
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `finance_order`
+--
+ALTER TABLE `finance_order`
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `modules`
 --
 ALTER TABLE `modules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `permission`
 --
 ALTER TABLE `permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=244;
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `team`
 --
@@ -407,7 +493,7 @@ ALTER TABLE `team`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT for table `user_type`
 --
