@@ -21,6 +21,8 @@
         <link href="<?php echo base_url() ?>admin_assets/assets/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo base_url() ?>admin_assets/assets/plugins/fullcalendar/fullcalendar.print.min.css" rel="stylesheet" media='print' type="text/css"/>
         <link href="<?php echo base_url() ?>admin_assets/assets/plugins/datatables/dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css">
+
         <!-- START THEME LAYOUT STYLE -->
         <link href="<?php echo base_url() ?>admin_assets/assets/dist/css/component_ui.min.css" rel="stylesheet" type="text/css"/>
         <link id="defaultTheme" href="<?php echo base_url() ?>admin_assets/assets/dist/css/skins/skin-dark-1.min.css" rel="stylesheet" type="text/css"/>

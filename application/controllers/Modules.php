@@ -144,6 +144,22 @@ class Modules extends MY_Controller {
 		redirect('modules');
 	}
 
+	public function get_old_data($id)
+	{
+		$fileds = $this->Modules_model->get_rows('modules_fileds',array('module_id'=>$id));
+		$module = $this->Modules_model->get_row_single('modules',array('id'=>$id));
+		$tablename = $module['main_name'];
+		$tablename = str_replace(" ","_",$tablename);
+		$url = $module['url'];
+		$this->create_module($url.'_model',$fileds,$tablename);
+		$this->create_controller($url,$url.'_model',$tablename,$fileds);
+		$this->create_folder($url);
+		$this->create_main_view($url,$url.'_model',$tablename,$fileds);
+		$this->create_create_view($url,$url.'_model',$tablename,$fileds);
+		$this->create_edit_view($url,$url.'_model',$tablename,$fileds);
+		redirect('modules');
+	}
+
 	public function edit($id)
 	{
 		if ($this->permission['edit'] == '0') 

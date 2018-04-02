@@ -94,6 +94,25 @@
     </div>
 </div>
 
+<div class="form-group row">
+    <label for="example-text-input" class="col-sm-3 col-form-label">DP 1<span class="required">*</span></label>
+    <div class="col-sm-9">
+    <input class="form-control" name="p1" type="number" value="<?php  echo $product['p1'] ?>" id="example-text-input" placeholder="" required="">
+    </div>
+</div>
+<div class="form-group row">
+    <label for="example-text-input" class="col-sm-3 col-form-label">DP 2<span class="required">*</span></label>
+    <div class="col-sm-9">
+    <input class="form-control" name="p2" type="number" value="<?php  echo $product['p2'] ?>" id="example-text-input" placeholder="" required="">
+    </div>
+</div>
+<div class="form-group row">
+    <label for="example-text-input" class="col-sm-3 col-form-label">DP 3<span class="required">*</span></label>
+    <div class="col-sm-9">
+    <input class="form-control" name="p3" type="number" value="<?php  echo $product['p3'] ?>" id="example-text-input" placeholder="" required="">
+    </div>
+</div>
+
                                   
 
                             <div class="form-group row">

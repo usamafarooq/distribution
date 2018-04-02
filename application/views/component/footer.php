@@ -38,6 +38,7 @@
 
      <!-- STRAT PAGE LABEL PLUGINS -->
         <script src="<?php echo base_url() ?>admin_assets/assets/plugins/datatables/dataTables.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.2/js/dataTables.fixedHeader.min.js"></script>
         <!-- START THEME LABEL SCRIPT -->
         <!-- <script src="<?php echo base_url() ?>admin_assets/assets/dist/js/app.min.js" type="text/javascript"></script>
         <script src="<?php echo base_url() ?>admin_assets/assets/dist/js/jQuery.style.switcher.min.js" type="text/javascript"></script> -->
@@ -55,6 +56,18 @@
                 $("#dataTableExample2").DataTable({
                     dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>tp",
                     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    buttons: [
+                        {extend: 'copy', className: 'btn-sm'},
+                        {extend: 'csv', title: 'ExampleFile', className: 'btn-sm'},
+                        {extend: 'excel', title: 'ExampleFile', className: 'btn-sm'},
+                        {extend: 'pdf', title: 'ExampleFile', className: 'btn-sm'},
+                        {extend: 'print', className: 'btn-sm'}
+                    ]
+                });
+                $("#order_table").DataTable({
+                    fixedHeader: true,
+                    dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>tp",
+                    "lengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]],
                     buttons: [
                         {extend: 'copy', className: 'btn-sm'},
                         {extend: 'csv', title: 'ExampleFile', className: 'btn-sm'},

@@ -3,6 +3,27 @@
 class Finance_model extends MY_Model
 {
 
+	public function get_data($id=null)
+	{
+		$this->db->select('o.*, d.scm_name')
+				 ->from('orders o')
+				 ->join('distribution d', 'd.dsr_code = o.distribution_code');
+		if ($id!=null) {
+			$this->db->where('o.user_id', $user_id);
+		}
+		return $this->db->get()->result_array();
+	}
+
+	public function get_csv_data($id)
+	{
+		$this->db->select('o.distribution_code as dcode, o.id as system-code, "" as one, "" as two, p.scm_product_code as scm-product-code, od.orders as qty, "401" as financecode-hardcoded')
+				 ->from('orders o')
+				 ->join('order_detail od', 'od.order_id = o.id')
+				 ->join('product p', 'p.product_code = od.pack_code')
+				 ->where('o.id', $id);
+		return $this->db->get()->result_array();
+	}
+
 	function order_index()
 	{
 		return $this->db->query("
@@ -82,6 +103,14 @@ SELECT o.*, d.scm_name,d.scm_code, c.closing, p.product_name, p.product_code, p.
 			$this->db->where('o.user_id',$id);
 		}
 		return $this->db->get()->result_array();
+	}
+
+	public function get_export_data()
+	{
+		$this->db->select('orders.*,product.scm_product_code')
+		->from('orders')
+		->join('product', 'orders.pak_code = product.product_code');
+		return $this->db->get()->result_array();         
 	}
 
 }

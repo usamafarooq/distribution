@@ -1,0 +1,10 @@
+dcode,system-code,,,scm-product-code,qty,financecode-hardcoded(it remain same)
+00328,1234,,,01010401002000100055,100,401
+00328,1234,,,01010401002000100063,100,401
+00328,1234,,,01010401002000100065,150,401
+00328,1234,,,01010401002000100036,700,401
+00328,1234,,,01010401002000200022,50,401
+
+finance export format
+
+scm#,system-code,qty divided in batch with i.e.(qty B1)(qty B2)etc,naration(remarks),Dc no 

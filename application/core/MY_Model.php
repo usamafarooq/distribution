@@ -60,7 +60,7 @@ class MY_Model extends CI_Model
 
     public function view_scm_code_ckeck($column,$data,$table_data)
     {
-        $query = 'SELECT * FROM '.$table_data.' WHERE LTRIM('.$column.') = '.$data;
+        $query = 'SELECT * FROM '.$table_data.' WHERE LTRIM('.$column.') = "'.$data.'"';
         return $this->query_single_result($query);
 
     }

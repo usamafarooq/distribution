@@ -40,7 +40,7 @@
     <select name="distribution_sort" class="form-control" required>
   <option value="">Please Select Distribution</option>
   <?php foreach($distributions as $distribution){ ?>
-  <option value="<?php echo $distribution['scm_code']; ?>"><?php echo $distribution['scm_name']; ?></option>
+  <option value="<?php echo $distribution['dsr_code']; ?>"><?php echo $distribution['scm_name']; ?></option>
     <?php } ?>
 </select>
     </div>

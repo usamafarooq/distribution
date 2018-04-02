@@ -73,7 +73,7 @@ if ($this->session->flashdata('update')) {
 												<tr>
 													<th>Id</th>
 													<th>Name</th>
-													<th>Description</th>
+													<!-- <th>Description</th> -->
 													<th>Product Code</th>
 													<th>Team</th>
 													<th>SCM Product Code</th>
@@ -94,7 +94,7 @@ if ($this->session->flashdata('update')) {
 													<td><?php echo $product['id'] ?></td>
 
 										<td><?php echo $product['product_name'] ?></td>
-										<td><?php echo $product['description'] ?></td>
+										<!-- <td><?php echo $product['description'] ?></td> -->
 										<td><?php echo $product['product_code'] ?></td>
 										<td><?php echo $product['team'] ?></td>
 										<td><?php echo $product['scm_product_code'] ?></td>
@@ -151,7 +151,8 @@ if ($this->session->flashdata('update')) {
                                             </div>
                                             <div class="modal-body">
                                                 
-<form method="post" id="restrict_file" action="<?php echo base_url() ?>product/csv_upload" enctype="multipart/form-data">
+<form method="post" id="restrict_file" action="<?php echo base_url() ?>product/csv_upload_price" enctype="multipart/form-data">
+<!-- <form method="post" id="restrict_file" action="<?php echo base_url() ?>product/csv_upload" enctype="multipart/form-data"> -->
                           <input type="file" name="csv_name" id="csv_check" accept=".csv,.xlsx,.xls">
                                                 
 

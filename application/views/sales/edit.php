@@ -40,7 +40,7 @@
     <div class="col-sm-9">
     <select name="Distribution_code" class="form-control" required>
   <?php foreach($distributions as $distribution){ ?>
-  <option value="<?php echo $distribution['scm_code']; ?>"    <?php if($orders['distribution_code'] == $distribution['scm_code'] ){ echo 'selected'; } ?>  ><?php echo $distribution['scm_name']; ?></option>
+  <option value="<?php echo  ltrim($distribution['dsr_code'], '0'); ?>"    <?php if($orders['distribution_code'] ==  ltrim($distribution['dsr_code'], '0') ){ echo 'selected'; } ?>  ><?php echo $distribution['scm_name']; ?></option>
     <?php } ?>
 </select>
     </div>

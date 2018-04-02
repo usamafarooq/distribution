@@ -31,9 +31,9 @@
         
         <a href="<?php echo base_url('orders/add') ?>"><button class="btn btn-info pull-right">Add Order</button></a>
 
-        <button type="button" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#myModal">Import Csv</button>
+        <!-- <button type="button" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#myModal">Import Csv</button>
 
-        <button type="button"  class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#exportmodel">Export Csv File</button>
+        <button type="button"  class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#exportmodel">Export Csv File</button> -->
 
 
        
@@ -45,8 +45,36 @@
                                     
                                     <div class="table-responsive">
 
-  
                                         <table id="dataTableExample2" class="table table-bordered table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.no</th>
+                                                    <th>Distribution Name</th>
+                                                    <th>Date</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php 
+                                                    $con = 0;
+                                                    foreach($index_data as $products_detail){
+                                                        $con++;
+                                                ?> 
+                                                <tr>
+                                                    <td><?php echo $con ?></td>
+                                                    <td><?php echo $products_detail['scm_name']; ?></td>
+                                                    <td><?php echo date('d M Y', strtotime($products_detail['date'])); ?></td>
+                                                    <td>
+                                                        <a href="<?php echo base_url(); ?>orders/view/<?php echo $products_detail['id']; ?>"><img src="<?php echo base_url() ?>assets/record1.png" title="View Order" alt="View Order" width="35" height="35"></a>
+                                                        <a href="<?php echo base_url(); ?>orders/edit/<?php echo $products_detail['id']; ?>"><img src="<?php echo base_url() ?>assets/record1.png" title="Edit Order" alt="Edit Order" width="35" height="35"></a>
+                                                        <!-- <a href="<?php echo base_url(); ?>orders/edit/<?php echo $products_detail['id']; ?>"><img src="<?php echo base_url() ?>assets/record1.png" title="Edit Order" alt="Edit Order" width="35" height="35"></a> -->
+                                                        <a href="<?php echo base_url(); ?>orders/delete/<?php echo $products_detail['id']; ?>" id="demo4" class="demo4"><img src="<?php echo base_url() ?>assets/d-icon.png" title="Delete" alt="Delete" width="35" height="35"></a>
+                                                    </td>
+                                                </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                        <!-- <table id="dataTableExample2" class="table table-bordered table-striped table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>S.no</th>
@@ -161,7 +189,7 @@ $month_key = date('m', strtotime('-'.$i.' month', strtotime($products_detail['da
 
 
                                             </tbody>
-                                        </table>
+                                        </table> -->
 
                                     </div>
                                 </div>
