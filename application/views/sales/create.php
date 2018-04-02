@@ -40,7 +40,7 @@
     <select name="distribution_code" class="form-control" required>
   <option value="">Please Select Distrbution</option>
   <?php foreach($distributions as $distribution){ ?>
-  <option value="<?php echo $distribution['scm_code']; ?>"><?php echo $distribution['scm_name']; ?></option>
+  <option value="<?php echo ltrim($distribution['dsr_code'], '0'); ?>"><?php echo $distribution['scm_name']; ?></option>
     <?php } ?>
 </select>
     </div>
@@ -50,7 +50,7 @@
     <label for="example-text-input" class="col-sm-3 col-form-label">Product<span class="required">*</span></label>
     <div class="col-sm-9">
     <select name="packcode" class="form-control" required>
-  <option value="">Please Select TeaProduct</option>
+  <option value="">Please Select Product</option>
   <?php foreach($products as $product){ ?>
   <option value="<?php echo $product['product_code']; ?>"><?php echo $product['product_name']; ?></option>
     <?php } ?>

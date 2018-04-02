@@ -17,7 +17,19 @@ SELECT o.*, d.scm_name,d.scm_code, c.closing, p.product_name, p.product_code, p.
 
 
 
-
+	public function get_data($order,$id=null)
+	{
+		$this->db->select('f.*,p.product_name,d.scm_name')
+				 ->from('finance_order f')
+				 ->join('orders o', 'f.order_id = o.id')
+				 ->join('product p', 'f.scm_code = p.scm_product_code')
+				 ->join('distribution d', 'o.distribution_code = d.dsr_code')
+				 ->where('o.id', $order);
+		if ($id!=null) {
+			$this->db->where('f.user_id', $id);
+		}
+		return $this->db->get()->result_array();
+	}
 
 	
 }

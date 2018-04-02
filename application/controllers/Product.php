@@ -101,19 +101,48 @@ class Product extends MY_Controller {
 	public function export_csv_file()
 	{
 	    $delimiter = ",";
-	    $filename = "names.csv";
+	    $filename = "product.csv";
 	    $f = fopen('php://memory', 'w');
-	     $fields = array('product_name','description','Product Code','Team','Scm Product Code','tp_product');
+	    //$fields = array('Team','Products Name SCM','SCM Product Code','IMS Pack Code','TP', 'Pack Carton');
 		$products_csv_upload = $this->Product_model->all_rows('product');
-		fputcsv($f,$fields, $delimiter);		
+		//fputcsv($f,$fields, $delimiter);		
 		foreach($products_csv_upload as $row){
-			$lineData = array($row['product_name'],$row['description'],$row['product_code'],$row['team'],$row['scm_product_code'],$row['tp_product']);
+			$lineData = array($row['team'],$row['product_name'],'="'.$row['scm_product_code'].'"',$row['product_code'],$row['tp_product'],$row['pack_carton']);
 			fputcsv($f,$lineData, $delimiter);
 		}
    		fseek($f, 0);
     	header('Content-Type: text/csv');
     	header('Content-Disposition: attachment; filename="' . $filename . '";');
     	fpassthru($f);		
+	}
+
+	public function csv_upload_price()
+	{
+		$mimes = array('application/vnd.ms-excel','text/csv','text/tsv');
+		if(in_array($_FILES['csv_name']['type'],$mimes))
+		{
+			if(!empty($_FILES))
+			{
+				$handle = fopen($_FILES['csv_name']['tmp_name'], "r");
+				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+					if (!empty($data[0]) && $data[0] != 'IMS Pack Code') {
+						$products_insert = array(
+							'tp_product' => $data[1],
+							'p1' => $data[2],
+							'p2' => $data[3],
+							'p3' => $data[4],
+						);
+						$this->Product_model->update('product',$products_insert,array('product_code'=>$data[0]));
+					}
+				}
+				fclose($handle);
+				redirect('product');
+			}
+		}
+		else
+		{
+			echo 'This File Is Not Supported';die();
+		}
 	}
 
 	public function csv_upload()
@@ -126,42 +155,48 @@ class Product extends MY_Controller {
 				$products_insert = [];
 				$handle = fopen($_FILES['csv_name']['tmp_name'], "r");
 				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-					if (!empty($data[0])) {
+					if (!empty($data[0]) && $data[0] != 'Team') {
 						$data_value = $data[2];
 						$column = 'product_code';
 						$table_data = 'product';
 						$product_code_ckeck = $this->Product_model->view_scm_code_ckeck($column,$data_value,$table_data);	
 						if (empty($product_code_ckeck)) {
-						$data_value = $data[4];
-						$column = 'scm_product_code';
-						$table_data = 'product';
-						$scm_product_code = $this->Product_model->view_scm_code_ckeck($column,$data_value,$table_data);
-						if (empty($scm_product_code)) {
-						$products_insert[] = array(
-							'user_id' => $this->session->userdata('user_id'),
-							'product_name' => $data[0],
-							'description' => $data[1],
-							'product_code' => $data[2],
-							'team' => $data[3],
-							'scm_product_code' => $data[4],
-							'tp_product' => $data[5],
+							$data_value = $data[3];
+							$column = 'scm_product_code';
+							$table_data = 'product';
+							$scm_product_code = $this->Product_model->view_scm_code_ckeck($column,$data_value,$table_data);
+							if (empty($scm_product_code)) {
+								$products_insert[] = array(
+									'user_id' => $this->session->userdata('user_id'),
+									'product_name' => $data[1],
+									//'description' => $data[1],
+									'product_code' => $data[3],
+									'team' => $data[0],
+									'scm_product_code' => $data[2],
+									'tp_product' => $data[4],
+									'pack_carton' => $data[5],
+									'p1' => $data[6],
+									'p2' => $data[7],
+									'p3' => $data[8],
 								);
-						$data_response = $this->Product_model->insert_batch('product',$products_insert);
-								}
-								else
-								{
-									redirect('product');
-								}
-						}
+								//$data_response = $this->Product_model->insert_batch('product',$products_insert);
+							}
 							else
 							{
-								redirect('product');
+								//redirect('product');
 							}
+						}
+						else
+						{
+							//redirect('product');
+						}
 					}
 				}
+				//echo '<pre>';print_r($products_insert);echo '</pre>';die;
+				$data_response = $this->Product_model->insert_batch('product',$products_insert);
 				fclose($handle);
 				if ($data_response) {
-				redirect('product');
+					redirect('product');
 				}
 			}
 		}

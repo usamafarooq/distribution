@@ -22,6 +22,7 @@ class Sales extends MY_Controller {
 		$this->data['title'] = 'Sales';
 		if ( $this->permission['view_all'] == '1'){
 			$this->data['orders'] = $this->Sales_model->sales_detail();
+			//$this->data['orders'] = array();
 			// echo '<pre>';print_r($this->data['orders']);die;
 		}
 		elseif ($this->permission['view'] == '1') {
@@ -104,11 +105,13 @@ class Sales extends MY_Controller {
 	public function export_csv_file()
 	{
 	    $delimiter = ",";
-	    $filename = "order.csv";
+	    $filename = "sales.csv";
 	    $f = fopen('php://memory', 'w');
+	    //$fields = array('distribution code','packcode','date','sales','closing');
+		//fputcsv($f,$fields, $delimiter);
 		$products_csv_upload = $this->Sales_model->all_rows('sales');
 		foreach($products_csv_upload as $row){
-			$lineData = array($row['Distribution_code'],$row['Packcode'],$row['Datename'],$row['Sales'],$row['Closing']);
+			$lineData = array($row['distribution_code'],$row['packcode'],$row['date'],$row['sales'],$row['closing']);
 			fputcsv($f,$lineData, $delimiter);
 		}
    		fseek($f, 0);
@@ -127,18 +130,26 @@ class Sales extends MY_Controller {
 				$products_insert = [];
 				$handle = fopen($_FILES['csv_name']['tmp_name'], "r");
 				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-					if (!empty($data[0])) {
-						$products_insert[] = array(
-							'user_id' => $this->session->userdata('user_id'),
-							'Distribution_code' => $data[0],
-							'Packcode' => $data[1],
-							'Datename' => $data[2],
-							'Sales' => $data[3],
-							'Closing' => $data[4],
-						);
+					//print_r($data[0]);
+					if ($data[0] != 'Type') {
+						$check = $this->check_sale($data[2],$data[8],date('Y-m-d', strtotime($data[11])));
+						if ($check) {
+							$id = $this->Sales_model->update('sales',array('sales' => $data[16],'closing' => $data[22]),array('id'=>$check));
+						}
+						else{
+							$products_insert[] = array(
+								'user_id' => $this->session->userdata('user_id'),
+								'distribution_code' => $data[2],
+								'packcode' => $data[8],
+								'date' => date('Y-m-d', strtotime($data[11])),
+								'sales' => $data[16],
+								'closing' => $data[22],
+							);
+						}
 					}
 				}
 				fclose($handle);
+				//print_r($products_insert);die;
 				$data_response = $this->Sales_model->insert_batch('sales',$products_insert);
 				if ($data_response) {
 				redirect('sales');
@@ -148,6 +159,17 @@ class Sales extends MY_Controller {
 		else
 		{
 			echo 'This File Is Not Supported';die();
+		}
+	}
+
+	public function check_sale($dsr,$scm,$date)
+	{
+		$data = $this->Sales_model->get_row_single('sales',array('packcode'=>$scm, 'distribution_code'=>$dsr, 'date'=>$date));
+		if (!empty($data)) {
+			return $data['id'];
+		}
+		else{
+			return 0;
 		}
 	}
 }

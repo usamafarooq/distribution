@@ -254,9 +254,9 @@
                         var type = html[i]['Type']
                         type = type.split('(')
                         type = type[0]
-                        if(type == 'int'){
+                        //if(type == 'int'){
                             relation.append('<option value="'+html[i]['Field']+'">'+html[i]['Field']+'</option>')
-                        }
+                        //}
                     }
                   }
                 });

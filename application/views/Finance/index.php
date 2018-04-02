@@ -26,15 +26,10 @@
 								<div class="panel-heading">
 									<div class="panel-title">
 										<h4>View Product</h4>
-										<?php 
-											if ($permission['created'] == '1') {
-										?>
-										<a href="<?php echo base_url('finance/create') ?>"><button class="btn btn-info pull-right">Add Product</button></a>
-										<?php } ?>
 
 										<button type="button" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;" data-toggle="modal" data-target="#myModal">Import Csv</button>
 
-			<a href="<?php echo base_url('finance/export_csv_file') ?>" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;">Export Csv File</a>
+			<!-- <a href="<?php echo base_url('finance/export_csv_file') ?>" class="btn btn-success pull-right" style="margin-right: 10px;color: white !important;">Export Csv File</a> -->
 
 
 
@@ -46,55 +41,27 @@
 										<table id="dataTableExample2" class="table table-bordered table-striped table-hover">
 											<thead>
 												<tr>
-													<th>Id</th>
-													<th>Distribution Name</th>
-													<th>Product Name</th>
-													<th>Order1</th>
-													<th>Order2</th>
-													<th>Order3</th>
-													<th>Growth</th>
-													<th>Packs Carton</th>
-													
-													<?php 
-														if ($permission['edit'] == '1' || $permission['deleted'] == '1'){
-													?>
-													<th>Action</th>
-													<?php } ?>
-												</tr>
+                                                    <th>S.no</th>
+                                                    <th>Distribution Name</th>
+                                                    <th>Date</th>
+                                                    <th>Action</th>
+                                                </tr>
 											</thead>
 										    <tbody>
-										    	<?php
-										    		foreach ($orders as $order) {
-										    	?>
-												<tr>
-													<td><?php echo $order['id'] ?></td>
-
-										<td><?php echo $order['scm_name'] ?></td>
-										<td><?php echo $order['product_name'] ?></td>
-										<td><?php echo $order['order_field'] ?></td>
-										<td><?php echo $order['order_field2'] ?></td>
-										<td><?php echo $order['order_field3'] ?></td>
-										<td><?php echo $order['growth'] ?></td>
-										<td><?php echo $order['carton'] ?></td>
-
-													<?php 
-														if ($permission['edit'] == '1' || $permission['deleted'] == '1'){
-													?>
-													<td>
-														<?php 
-															if ($permission['edit'] == '1') {
-														?>
-														<a href="<?php echo base_url() ?>finance/edit/<?php echo $order['id'] ?>"><img src="<?php echo base_url() ?>assets/record1.png" title="View Order" alt="View Order" width="35" height="35"></a>
-														<?php } ?>
-														<?php 
-															if ($permission['deleted'] == '1') {
-														?>
-		                                                <a href="<?php echo base_url() ?>finance/delete/<?php echo $order['id'] ?>"><img src="<?php echo base_url() ?>assets/d-icon.png" title="Delete" alt="Delete" width="35" height="35"></a>
-		                                                <?php } ?>
-	                                                </td>
-	                                                <?php } ?>
-												</tr>
-												<?php } ?>
+										    	<?php 
+                                                    $con = 0;
+                                                    foreach($orders as $products_detail){
+                                                        $con++;
+                                                ?> 
+                                                <tr>
+                                                    <td><?php echo $con ?></td>
+                                                    <td><?php echo $products_detail['scm_name']; ?></td>
+                                                    <td><?php echo date('d M Y', strtotime($products_detail['date'])); ?></td>
+                                                    <td>
+                                                        <a href="<?php echo base_url(); ?>finance/export/<?php echo $products_detail['id']; ?>"><img src="<?php echo base_url() ?>assets/record1.png" title="View Order" alt="View Order" width="35" height="35"></a>
+                                                    </td>
+                                                </tr>
+                                                <?php } ?>
 											</tbody>
 										</table>
 										
@@ -123,7 +90,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 
-<form method="post" id="restrict_file" action="<?php echo base_url() ?>finance/csv_upload" enctype="multipart/form-data">
+<form method="post" id="restrict_file" action="<?php echo base_url() ?>finance/import" enctype="multipart/form-data">
                           <input type="file" name="csv_name" id="csv_check" accept=".csv,.xlsx,.xls">
                                                 
 

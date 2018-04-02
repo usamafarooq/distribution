@@ -7,6 +7,7 @@ class Distributor extends MY_Controller {
     {
         parent::__construct();
         $this->load->model('Distributor_model');
+        $this->load->model('Orders_model');
         $this->module = 'Distributor';
         $this->user_type = $this->session->userdata('user_type');
         $this->id = $this->session->userdata('user_id');
@@ -15,35 +16,62 @@ class Distributor extends MY_Controller {
         $this->pro_permission = $this->get_permission('product',$this->user_type);
     }
 
-
     public function index()
+    {
+        if ( $this->permission['view'] == '0' && $this->permission['view_all'] == '0' ) 
+        {
+            redirect('home');
+        }
+        $this->data['title'] = 'Order';
+        if ( $this->permission['view_all'] == '1'){
+            $this->data['index_data'] = $this->Distributor_model->get_index();
+        }
+        elseif ($this->permission['view'] == '1') {
+            $this->data['index_data'] = $this->Distributor_model->get_index($this->id);
+        }
+        $this->data['permission'] = $this->permission;
+        //echo '<pre>';print_r($this->data['index_data']);die;
+        $this->load->template('Distributor/index',$this->data);
+        
+    }
+
+
+    public function view($id)
     {
     	if ( $this->permission['view'] == '0' && $this->permission['view_all'] == '0' ) 
 		{
 			redirect('home');
 		}
+		if ($this->input->post()) {
+			//print_r($this->input->post());die;
+			$ids = $this->input->post('id');
+			$receive_quantity = $this->input->post('receive_quantity');
+			$remarks = $this->input->post('remarks');
+			for ($i=0; $i < sizeof($ids); $i++) { 
+				if (!empty($receive_quantity[$i])) {
+					$this->Distributor_model->update('finance_order',array('receive_quantity'=>$receive_quantity[$i],'distribution_remarks'=>$remarks[$i]),array('id'=>$ids[$i]));
+				}
+			}
+		}
 		$this->data['title'] = 'Distributor';
-		if ( $this->permission['view_all'] == '1'){
-
-
-		$this->db->select('factory.*,product.product_name,distribution.scm_name')
-		->from('factory')
-		->join('distribution', 'factory.scm_order_no = distribution.scm_code')
-		->join('finance_order', 'factory.scm_order_no = finance_order.scm_code')
-		->join('orders', 'finance_order.order_id = orders.id')
-		->join('product', 'orders.pak_code = product.product_code');
-		$this->data['distributors'] = $this->db->get()->result_array();
-
-		// print_r($this->data['distributors']);die; 
-
+		if ($this->permission['view_all'] == '1'){
+			$this->data['distributors'] = $this->Distributor_model->get_data($id);
 		}
 		elseif ($this->permission['view'] == '1') {
-			// $this->data['index_data'] = $this->Distributor_model->order_index_single($this->id);
+			$this->data['distributors'] = $this->Distributor_model->get_data($id,$this->id);
 		}
 		$this->data['permission'] = $this->permission;
 		// print_r($this->data['index_data']);die;
-		$this->load->template('Distributor/index',$this->data); 
+		$this->load->template('Distributor/view',$this->data); 
 		
+    }
+
+    public function all($id)
+    {
+    	$query = 'UPDATE finance_order SET receive_quantity = orders WHERE order_id = '.$id;
+    	$id = $this->Distributor_model->query($query);
+    	//print_r($this->db->last_query());die;
+    	redirect('distributor');
     }
 
 
@@ -52,22 +80,20 @@ class Distributor extends MY_Controller {
 	{
 
 	    $delimiter = ",";
-	    $filename = "names.csv";
+	    $filename = "orders.csv";
 	    $f = fopen('php://memory', 'w');
-	    $fields = array('id','SCM Order No','SCM order Name','Product Name','DC No','Date','C.N','Kg','Cartons','Packs','Receive Quantity');
+	    //$fields = array('id','SCM Order No','SCM order Name','Product Name','DC No','Date','C.N','Kg','Cartons','Packs','Receive Quantity');
 
 	    $Remarks = '';
 	    $Dc_no = '';
 	    $hardcode = '00000';
-		fputcsv($f,$fields, $delimiter);
-
-		$this->db->select('factory.*,product.product_name,distribution.scm_name')
-		->from('factory')
-		->join('distribution', 'factory.scm_order_no = distribution.scm_code')
-		->join('finance_order', 'factory.scm_order_no = finance_order.scm_code')
-		->join('orders', 'finance_order.order_id = orders.id')
-		->join('product', 'orders.pak_code = product.product_code');
-		$result = $this->db->get()->result_array();
+		//fputcsv($f,$fields, $delimiter);
+		if ($this->permission['view_all'] == '1'){
+			$result = $this->Distributor_model->get_data();
+		}
+		elseif ($this->permission['view'] == '1') {
+			$result = $this->Distributor_model->get_data($this->id);
+		}
 
 		                         
 
@@ -100,19 +126,19 @@ class Distributor extends MY_Controller {
 					
 					// echo '<pre>';print_r($data);die;
 
-					if ($data[0] != 'SCM Order No') {
+					if ($data[0] != 'id') {
 						
 						$products_insert = array(
-							'receive_quantity' => $data[9],
+							'receive_quantity' => $data[10],
 								);
 
 				$where_data = $data[0];
-				$id = $this->Distributor_model->update('factory',$products_insert,array('scm_order_no'=>$where_data));		
+				$id = $this->Distributor_model->update('factory',$products_insert,array('id'=>$where_data));		
 				
 				}}
 
 				fclose($handle);
-				redirect('factory');
+				redirect('distributor');
 				
 			}
 		}

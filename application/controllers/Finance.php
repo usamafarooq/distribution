@@ -98,20 +98,16 @@ public function csv_upload()
 	{
 
 	    $delimiter = ",";
-	    $filename = "names.csv";
+	    $filename = "orders.csv";
 	    $f = fopen('php://memory', 'w');
-	    $fields = array('Distributor Code','Order Id','Blank1','Blank2','Scm Product Code','Qty','Hardcoded');
+	    //$fields = array('Distributor Code','Order Id','Blank1','Blank2','Scm Product Code','Qty','Hardcoded');
 
 
 	    $blank1 = '';
 	    $blank2 = '';
 	    $hardcode = '00000';
-		fputcsv($f,$fields, $delimiter);
-
-		$this->db->select('orders.*,product.scm_product_code')
-		->from('orders')
-		->join('product', 'orders.pak_code = product.product_code');
-		$result = $this->db->get()->result_array();                         
+		//fputcsv($f,$fields, $delimiter);
+		$result = $this->Finance_model->get_export_data();                         
 
 		foreach($result as $row){
 		$total = $row['order_field'] + $row['order_field2'] + $row['order_field3'];
@@ -135,13 +131,80 @@ public function csv_upload()
 		}
 		$this->data['title'] = 'Finance';
 		if ( $this->permission['view_all'] == '1'){
-			$this->data['orders'] = $this->Finance_model->get_orders();
+			$this->data['orders'] = $this->Finance_model->get_data();
 		}
 		elseif ($this->permission['view'] == '1') {
-			$this->data['orders'] = $this->Finance_model->get_orders($this->id);
+			$this->data['orders'] = $this->Finance_model->get_data($this->id);
 		}
 		$this->data['permission'] = $this->permission;
 		$this->load->template('finance/index',$this->data);
+	}
+
+	public function export($id)
+	{
+		$data = $this->Finance_model->get_csv_data($id);
+		$delimiter = ",";
+	    $filename = "Finance.csv";
+	    $f = fopen('php://memory', 'w');
+	 //    $fields = array('dcode','system-code','','','scm-product-code','qty','financecode-hardcoded');
+		// fputcsv($f,$fields, $delimiter);
+		foreach($data as $row){
+		//$total = $row['order_field'] + $row['order_field2'] + $row['order_field3'];
+			$lineData = array();
+			foreach ($row as $key => $value) {
+				if ($key == 'scm-product-code') {
+					$lineData[] = '="'.$row[$key].'"';
+				}
+				else{
+					$lineData[] = $row[$key];
+				}
+			}
+		//$lineData = array($row['distribution_code'],$row['id'],$blank1,$blank2,$row['scm_product_code'],$total,$hardcode);
+		// echo '<pre>';print_r($lineData);die;
+			fputcsv($f,$lineData, $delimiter);
+		}
+   		fseek($f, 0);
+    	header('Content-Type: text/csv');
+    	header('Content-Disposition: attachment; filename="' . $filename . '";');
+    	fpassthru($f);
+		//echo '<pre>';print_r($data);
+	}
+
+	public function import()
+	{
+		$mimes = array('application/vnd.ms-excel','text/csv','text/tsv');
+		if(in_array($_FILES['csv_name']['type'],$mimes))
+		{
+			if(!empty($_FILES))
+			{
+				$products_insert = [];
+				$handle = fopen($_FILES['csv_name']['tmp_name'], "r");
+				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+					if (!empty($data[0]) && $data[0] != 'SCM Pack Code') {
+						//echo '<pre>';print_r($data);echo '</pre>';
+						$products_insert[] = array(
+							'user_id' => $this->session->userdata('user_id'),
+							'scm_code' => $data[0],
+							'order_id' => $data[6],
+							'scm_no' => $data[4],
+							'orders'=>$data[2],
+							'batch' => $data[1],
+							'remarks' => $data[5],
+							'dc_no' => $data[3],
+						);
+					}
+				}
+				$data_response = $this->Finance_model->insert_batch('finance_order',$products_insert);
+				fclose($handle);
+				if ($data_response) {
+					redirect('finance');
+				}
+			}
+		}
+		else
+		{
+			echo 'This File Is Not Supported';die();
+		}
 	}
 
 
